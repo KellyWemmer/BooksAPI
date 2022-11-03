@@ -1,4 +1,7 @@
 ﻿@page "/counter"
+@using BooksAPI_Server.Models
+@using Newtonsoft.Json
+@inject HttpClient httpClient
 
 <PageTitle>Counter</PageTitle>
 
@@ -6,13 +9,26 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="TestApi">Click me</button>
 
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async Task TestApi()
     {
-        currentCount++;
+        var url = "https://openlibrary.org/search.json?q=the+witness+nora";
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        var response = await httpClient.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<BooksResponse>(responseBody);
+
+            foreach (var item in result.docs)
+            {
+                Console.WriteLine(item.author_name);
+            }
+        }
     }
 }
