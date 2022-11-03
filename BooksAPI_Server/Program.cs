@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+//builder.Services.AddMvc().AddNewtonsoftJson();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpClient(); //Similar to axios client
 
