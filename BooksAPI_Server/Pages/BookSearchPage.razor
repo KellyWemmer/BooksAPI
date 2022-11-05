@@ -1,0 +1,30 @@
+﻿@page "/bookSearch"
+@using BooksAPI_Server.Models
+@using BooksAPI_Server.Services
+@inject OpenLibraryService openLibraryService
+<h3>BookSearchPage</h3>
+
+<input type="text" @bind-value="searchTerm" placeholder="Search Term"/>
+<button @onclick="SearchQuery">Search</button>
+@*Razor code needs the @ for C#*@
+@if (booksResponse != null && booksResponse.docs != null)
+{
+    @foreach (var item in booksResponse.docs)
+    {
+        <p>@item.title</p>
+    }
+}
+
+
+@code {
+    //Use string.Empty instead of "" in C#
+    // C# functions use pascal case
+    string searchTerm = String.Empty;
+    BooksResponse booksResponse;
+
+    private async Task SearchQuery()
+    {
+        booksResponse = await openLibraryService.Search(searchTerm);
+    }
+
+}

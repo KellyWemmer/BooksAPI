@@ -1,7 +1,7 @@
 ﻿using BooksAPI_Server.Models;
 using Newtonsoft.Json;
 
-namespace BooksAPI_Server
+namespace BooksAPI_Server.Services  
 {
     public class OpenLibraryService
     {
@@ -13,7 +13,7 @@ namespace BooksAPI_Server
             this.httpClient = httpClient;
         }
 
-        private async Task<BooksResponse> Search(string query)
+        public async Task<BooksResponse> Search(string query)
         {
             //var query = "fiction";
             var url = "https://openlibrary.org/search.json?q="+System.Net.WebUtility.UrlEncode(query);
