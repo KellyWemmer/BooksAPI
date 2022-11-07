@@ -15,7 +15,7 @@ namespace BooksAPI_Server.Services
 
         public async Task<BooksResponse> Search(string query)
         {
-            var url = "https://openlibrary.org/search.json?q="+System.Net.WebUtility.UrlEncode(query)+"/anand&offset=0&limit=20";
+            var url = "https://openlibrary.org/search.json?q="+System.Net.WebUtility.UrlEncode(query)+"&offset=0&limit=20";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await httpClient.SendAsync(request);
 
