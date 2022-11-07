@@ -12,6 +12,7 @@
     @foreach (var item in booksResponse.docs)
     {
         <p>@item.title</p>
+        <img src="@($"https://covers.openlibrary.org/b/id/{@item.coverI}-M.jpg")" />
     }
 }
 
