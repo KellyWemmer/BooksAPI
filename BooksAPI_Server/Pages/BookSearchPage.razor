@@ -9,7 +9,7 @@
 @*Razor code needs the @ for C#*@
 @if (booksResponse != null && booksResponse.docs != null)
 {
-    @foreach (var item in booksResponse.docs.Where(b => b.language.Contains("eng")).ToList())
+    @foreach (var item in booksResponse.docs)
     {
         <p>@item.title</p>
         <img src="@($"https://covers.openlibrary.org/b/id/{@item.coverI}-M.jpg")" />
