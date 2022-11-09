@@ -2,7 +2,7 @@
 @using BooksAPI_Server.Models
 @using BooksAPI_Server.Services
 @inject OpenLibraryService openLibraryService
-<h3>BookSearchPage</h3>
+<h3>Book Search Page</h3>
 
 <input type="text" @bind-value="searchTerm" placeholder="Search Term"/>
 <button @onclick="SearchQuery">Search</button>
@@ -12,7 +12,7 @@
     @foreach (var item in booksResponse.docs)
     {
         <p>@item.title</p>
-        <img src="@($"https://covers.openlibrary.org/b/id/{@item.coverI}-M.jpg")" />
+        <img src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-M.jpg")" />
     }
 }
 
