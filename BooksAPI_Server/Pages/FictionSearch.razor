@@ -1,13 +1,60 @@
 ﻿@page "/fictionSearch"
-<h3>Search Fiction</h3>
 
-<input type="text" placeholder="Search Title"/><br/>
-<input type="text" placeholder="Search Author"/><br/>
-<h6>Published between years:</h6><br/>
-<input type="number" placeholder=1990/> and <input type="number" placeholder=2022/><br/>
-<button>Fantasy</button><button>Historical Fiction</button><button>Horror</button><button>Humor</button><button>Literature</button><br/>
-<button>Magic</button><button>Mystery/Detective</button><button>Plays</button><button>Poetry</button><button>Romance</button><br/>
-<button>Sci Fi</button><button>Short Stories</button><button>Thriller</button><button>Young Adult</button>
+<div class="container-fluid">
+    <div class="row">
+        <h3 class="col-12 p-2">Search Fiction</h3>
+    </div>
+    <div class="row">
+        <div class="col-12 p-2">
+            <input type="text" placeholder="Search Title"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 p-2">
+            <input type="text" placeholder="Search Author"/> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 pt-2">
+            <h6 class="fw-bold">Published between years:</h6> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <input type="number" placeholder=1990/> and <input type="number" placeholder=2022/>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <h6 class="fw-bold">Genre:</h6>
+    </div>
+    <div class="row">
+        <div class="col-12 p-1">
+            <button>Fantasy</button>
+            <button>Literature</button>
+            <button>Historical Fiction</button>
+            <button>Horror</button>
+            <button>Humor</button>
+            <button>Literature</button>
+        </div>         
+    </div>
+    <div class="row">
+        <div class="col-12 p-1">
+            <button>Magic</button>
+            <button>Mystery/Detective</button>
+            <button>Plays</button>
+            <button>Poetry</button>
+            <button>Romance</button>
+        </div>
+    </div>
+    <div class="row"
+        <div class="col-12 p-1">
+            <button>Sci-Fi</button>
+            <button>Short Stories</button>
+            <button>Thriller</button>
+            <button>Young Adult</button> 
+        </div>
+    </div>    
+</div>
 
 @code {
 
