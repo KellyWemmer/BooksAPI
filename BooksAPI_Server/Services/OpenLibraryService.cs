@@ -13,7 +13,7 @@ namespace BooksAPI_Server.Services
             this.httpClient = httpClient;
         }
 
-        public async Task<BooksResponse> Search(string query)
+        public async Task<BooksResponse> basicSearch(string query)
         {
             var url = "https://openlibrary.org/search.json?q="+System.Net.WebUtility.UrlEncode(query)+"&offset=0&limit=20";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -31,8 +31,6 @@ namespace BooksAPI_Server.Services
                 throw new Exception("error occurred");
             }
         }
-
-
 
     }
 }

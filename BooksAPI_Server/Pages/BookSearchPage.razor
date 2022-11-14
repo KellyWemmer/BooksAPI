@@ -25,7 +25,7 @@
 
     private async Task SearchQuery()
     {
-        booksResponse = await openLibraryService.Search(searchTerm);
+        booksResponse = await openLibraryService.basicSearch(searchTerm);
     }
 
 }
