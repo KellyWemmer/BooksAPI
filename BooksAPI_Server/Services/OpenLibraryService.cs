@@ -32,5 +32,24 @@ namespace BooksAPI_Server.Services
             }
         }
 
+        public async Task<BooksResponse> FictionSearch(string query)
+        {
+            var url = "https://openlibrary.org/search.json?subject=fiction+" + query + "&offset=0&limit=20";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = await httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<BooksResponse>(responseBody);
+
+
+            }
+            else
+            {
+                throw new Exception("error occurred");
+            }
+        }
+
     }
 }

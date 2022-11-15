@@ -34,7 +34,7 @@
         <div class="col-12 p-1">
             @*@(() => makes sure the code doesn't run before the button is clicked*@
             <button @onclick="@(() => AddSubject("fantasy"))">Fantasy</button>
-            <button @onclick="@(() => AddSubject("historical fiction"))">Historical Fiction</button>
+            <button @onclick="@(() => AddSubject("historical+fiction"))">Historical Fiction</button>
             <button @onclick="@(() => AddSubject("horror"))">Horror</button>
             <button @onclick="@(() => AddSubject("humor"))">Humor</button>
             <button @onclick="@(() => AddSubject("literature"))">Literature</button>
@@ -43,7 +43,7 @@
     <div class="row">
         <div class="col-12 p-1">
             <button @onclick="@(() => AddSubject("magic"))">Magic</button>
-            <button @onclick="@(() => AddSubject("mystery detective"))">Mystery/Detective</button>
+            <button @onclick="@(() => AddSubject("mystery+detective"))">Mystery/Detective</button>
             <button @onclick="@(() => AddSubject("plays"))">Plays</button>
             <button @onclick="@(() => AddSubject("poetry"))">Poetry</button>
             <button @onclick="@(() => AddSubject("romance"))">Romance</button>
@@ -51,26 +51,41 @@
     </div>
     <div class="row">
         <div class="col-12 p-1">
-            <button @onclick="@(() => AddSubject("science fiction"))">Sci-Fi</button>
-            <button @onclick="@(() => AddSubject("short stories"))">Short Stories</button>
+            <button @onclick="@(() => AddSubject("science+fiction"))">Sci-Fi</button>
+            <button @onclick="@(() => AddSubject("short+stories"))">Short Stories</button>
             <button @onclick="@(() => AddSubject("thriller"))">Thriller</button>
-            <button @onclick="@(() => AddSubject("young adult"))">Young Adult</button> 
+            <button @onclick="@(() => AddSubject("young+adult"))">Young Adult</button> 
         </div>
     </div>
     <div class="row">
         <div class="col-12 pt-3">
-            <button>Submit</button>
+            <button @onclick="HandleSubmit">Submit</button>
         </div>
     </div>
 </div>
 
 @code {
     List<string> subjects = new List<string>();
+        BooksResponse booksResponse;
 
 
     private void AddSubject(string subject)
     {
         subjects.Add(subject);
     }
+
+
+    private async Task HandleSubmit()
+    {
+        string query = string.Empty;
+
+        if (subjects.Count>0)
+        {
+            query += string.Join("+", subjects).ToString(); 
+            booksResponse = await openLibraryService.FictionSearch(query);
+        }
+        
+    }
+    
 
 }
