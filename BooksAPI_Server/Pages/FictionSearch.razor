@@ -24,7 +24,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <input type="number" placeholder=1990/> and <input type="number" placeholder=2022/>
+            <input type="number" placeholder=1990 @bind-value="yearMin"/> and <input type="number" placeholder=2022 @bind-value="yearMax"/>
         </div>
     </div>
     <div class="row pt-3">
@@ -67,10 +67,10 @@
         <div class="row m-3">
 
             @foreach (var item in booksResponse.docs)
-            {    
-           
+            {           
                 <div class="col-2 mt-3">
                     <p>@item.title</p>
+                    <p>@item.first_publish_year</p>
                     <img src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-M.jpg")" />
                 </div>
             }
@@ -88,7 +88,10 @@
 
 @code {
     List<string> subjects = new List<string>();
-        BooksResponse booksResponse;
+    int? yearMin;
+    int? yearMax;
+
+    BooksResponse booksResponse;
 
 
     private void AddSubject(string subject)
@@ -96,16 +99,21 @@
         subjects.Add(subject);
     }
 
-
     private async Task HandleSubmit()
     {
-        string subjectQuery = string.Empty;
 
+        string query = "q=subject=fiction+";
         if (subjects.Count>0)
         {
-            subjectQuery += string.Join("+", subjects).ToString(); 
-            booksResponse = await openLibraryService.FictionSearch(subjectQuery);
-        }        
+            query += string.Join("+", subjects).ToString();            
+        } 
+        
+        if (yearMin != null & yearMax != null)
+        {
+            query += $"&first_publish_year%3A[{yearMin}+TO+{yearMax}]&sort=new";
+        }
+
+        booksResponse = await openLibraryService.FictionSearch(query);
     }    
 
 }

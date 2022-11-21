@@ -32,9 +32,10 @@ namespace BooksAPI_Server.Services
             }
         }
 
-        public async Task<BooksResponse> FictionSearch(string subjectQuery)
+        public async Task<BooksResponse> FictionSearch(string query)
         {
-            var url = "https://openlibrary.org/search.json?subject=fiction+" + subjectQuery + "&offset=0&limit=24";
+            var url = $"https://openlibrary.org/search.json?{query}&offset=0&limit=24";
+            //var url = "https://openlibrary.org/search.json?subject=fiction+" + subjectQuery + "&offset=0&limit=24";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await httpClient.SendAsync(request);
 
