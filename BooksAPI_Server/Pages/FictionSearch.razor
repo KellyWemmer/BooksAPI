@@ -93,21 +93,32 @@
 
     BooksResponse booksResponse;
 
+    //Needs a method to be able to add string to List
+    protected override void OnInitialized()
+    {
+        AddSubject("fiction");
+    }
 
     private void AddSubject(string subject)
-    {
-        subjects.Add(subject);
+    {   
+        subjects.Add($"'{subject}'");
     }
 
     private async Task HandleSubmit()
     {
+        //These are the query strings that I'm looking for:
+            //subject = ("fiction" + "${subject}" + "${subject}");
+            //first_publish_year%3A[2000+TO+2022]
+            //author=nora+roberts
 
-        string query = "q=subject=fiction+";
-        if (subjects.Count>0)
-        {
-            query += string.Join("+", subjects).ToString();            
-        } 
-        
+        string query = "subject=";
+
+        string rawSubjects = string.Join("+", subjects).ToString();
+        rawSubjects = $"({rawSubjects})";
+
+        query += rawSubjects;
+
+
         if (yearMin != null & yearMax != null)
         {
             query += $"&first_publish_year%3A[{yearMin}+TO+{yearMax}]&sort=new";
