@@ -124,20 +124,19 @@
         //title=witness
         //language:eng
 
-        string query = "subject=";
+        string query = "q=";
+
+        if (yearMin != null & yearMax != null)
+        {
+            query += $"first_publish_year%3A[{yearMin}+TO+{yearMax}]&sort=new";
+        }
 
         string rawSubjects = string.Join("+", subjects).ToString();
         rawSubjects = $"({rawSubjects})";
 
-        query += rawSubjects;
+        query += $"&subject={rawSubjects}";
 
-
-        if (yearMin != null & yearMax != null)
-        {
-            query += $"&sort=new&first_publish_year%3A[{yearMin}+TO+{yearMax}]";
-        }
-
-        query += $"&page={currentPage}";
+        query += $"&language:eng&sort=new&page={currentPage}";
 
         booksResponse = await openLibraryService.FictionSearch(query);
     }    
