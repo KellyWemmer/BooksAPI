@@ -139,6 +139,8 @@
         query += $"&language:eng&sort=new&page={currentPage}";
 
         booksResponse = await openLibraryService.FictionSearch(query);
+
+        booksResponse.docs = booksResponse.docs.Where(x => x.cover_i != 0).ToList();
     }    
 
 }
