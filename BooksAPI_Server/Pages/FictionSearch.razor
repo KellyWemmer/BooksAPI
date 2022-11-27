@@ -78,18 +78,17 @@
     } 
     <div class="d-flex justify-content-center">
         <div class="col-12 m-3">
-           <button class="m-2">Previous</button><button class="m-2">Next</button>
+           <button @onclick="PreviousPage" class="m-2">Previous</button><button @onclick="NextPage" class="m-2">Next</button>
         </div>        
     </div>
 </div>
-
-
 
 
 @code {
     List<string> subjects = new List<string>();
     int? yearMin;
     int? yearMax;
+    int currentPage = 1;
 
     BooksResponse booksResponse;
 
@@ -104,14 +103,26 @@
         subjects.Add($"\"{subject}\"");
     }
 
+    private async Task PreviousPage()
+    {
+        currentPage -= 1;
+        await HandleSubmit();
+    }
+
+    private async Task NextPage()
+    {
+        currentPage += 1;
+        await HandleSubmit();
+    }
+
     private async Task HandleSubmit()
     {
         //These are the query strings that I'm looking for:
-            //subject = ("fiction" + "${subject}" + "${subject}");
-            //first_publish_year%3A[2000+TO+2022]
-            //author=nora+roberts
-            //title=witness
-            //language:eng
+        //subject = ("fiction" + "${subject}" + "${subject}");
+        //first_publish_year%3A[2000+TO+2022]
+        //author=nora+roberts
+        //title=witness
+        //language:eng
 
         string query = "subject=";
 
@@ -123,8 +134,10 @@
 
         if (yearMin != null & yearMax != null)
         {
-            query += $"&first_publish_year%3A[{yearMin}+TO+{yearMax}]&sort=new";
+            query += $"&sort=new&first_publish_year%3A[{yearMin}+TO+{yearMax}]";
         }
+
+        query += $"&page={currentPage}";
 
         booksResponse = await openLibraryService.FictionSearch(query);
     }    
