@@ -31,35 +31,61 @@
         <h6 class="fw-bold">Genre:</h6>
     </div>
     <div class="row">
-        <div class="col-12 p-1">
+        <div class="col-4 m-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
             @*@(() => makes sure the code doesn't run before the button is clicked*@
-            <button @onclick="@(() => AddSubject("fantasy"))">Fantasy</button>
-            <button @onclick="@(() => AddSubject("historical+fiction"))">Historical Fiction</button>
-            <button @onclick="@(() => AddSubject("horror"))">Horror</button>
-            <button @onclick="@(() => AddSubject("humor"))">Humor</button>
-            <button @onclick="@(() => AddSubject("literature"))">Literature</button>
+            <input type="checkbox" class="btn-check" id="btnFantasy" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnFantasy" @onclick="@(() => AddSubject("fantasy"))">Fantasy</label>
+            
+            <input type="checkbox" class="btn-check" id="btnHistFict" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnHistFict" @onclick="@(() => AddSubject("historical+fiction"))">Historical Fiction</label>
+            
+            <input type="checkbox" class="btn-check" id="btnHorror" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnHorror" @onclick="@(() => AddSubject("horror"))">Horror</label>
+            
+            <input type="checkbox" class="btn-check" id="btnHumor" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnHumor" @onclick="@(() => AddSubject("humor"))">Humor</label>
+            
+            <input type="checkbox" class="btn-check" id="btnLiterature" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnLiterature" @onclick="@(() => AddSubject("literature"))">Literature</label>           
+            
         </div>         
     </div>
     <div class="row">
-        <div class="col-12 p-1">
-            <button @onclick="@(() => AddSubject("magic"))">Magic</button>
-            <button @onclick="@(() => AddSubject("mystery+detective"))">Mystery/Detective</button>
-            <button @onclick="@(() => AddSubject("plays"))">Plays</button>
-            <button @onclick="@(() => AddSubject("poetry"))">Poetry</button>
-            <button @onclick="@(() => AddSubject("romance"))">Romance</button>
+        <div class="col-4 m-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" class="btn-check" id="btnMagic" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnMagic" @onclick="@(() => AddSubject("magic"))">Magic</label>
+
+            <input type="checkbox" class="btn-check" id="btnMystDet" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnMystDet" @onclick="@(() => AddSubject("mystery+detective"))">Mystery/Detective</label>
+
+            <input type="checkbox" class="btn-check" id="btnPlays" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnPlays" @onclick="@(() => AddSubject("plays"))">Plays</label>
+
+            <input type="checkbox" class="btn-check" id="btnPoetry" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnPoetry" @onclick="@(() => AddSubject("poetry"))">Poetry</label>
+
+            <input type="checkbox" class="btn-check" id="btnRomance" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnRomance" @onclick="@(() => AddSubject("romance"))">Romance</label>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 p-1">
-            <button @onclick="@(() => AddSubject("science+fiction"))">Sci-Fi</button>
-            <button @onclick="@(() => AddSubject("short+stories"))">Short Stories</button>
-            <button @onclick="@(() => AddSubject("thriller"))">Thriller</button>
-            <button @onclick="@(() => AddSubject("young+adult"))">Young Adult</button> 
+        <div class="col-4 m-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="checkbox" class="btn-check" id="btnSciFi" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnSciFi" @onclick="@(() => AddSubject("science+fiction"))">Sci-Fi</label>
+
+            <input type="checkbox" class="btn-check" id="btnShortStor" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnShortStor" @onclick="@(() => AddSubject("short+stories"))">Short Stories</label>
+
+            <input type="checkbox" class="btn-check" id="btnThriller" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnThriller" @onclick="@(() => AddSubject("thriller"))">Short Stories</label>
+
+            <input type="checkbox" class="btn-check" id="btnYoungAd" autocomplete="off"/>
+            <label class="btn btn-outline-primary fw-bold" for="btnYoungAd" @onclick="@(() => AddSubject("young+adult"))">Young Adult</label>
         </div>
     </div>
     <div class="row">
         <div class="col-12 pt-3">
-            <button @onclick="HandleSubmit">Submit</button>
+            <button class="btn btn-success" @onclick="HandleSubmit">Submit</button>
         </div>
     </div> 
     @if (booksResponse != null && booksResponse.docs != null)
@@ -68,8 +94,8 @@
 
             @foreach (var item in booksResponse.docs)
             {           
-                <div class="col-2 mt-3">
-                    <p>@item.title</p>
+                <div class="col-2">
+                    <p class="mt-3">@item.title"()"</p>
                     <p>@item.first_publish_year</p>
                     <img src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-M.jpg")" />
                 </div>
@@ -78,7 +104,7 @@
     } 
     <div class="d-flex justify-content-center">
         <div class="col-12 m-3">
-           <button @onclick="PreviousPage" class="m-2">Previous</button><button @onclick="NextPage" class="m-2">Next</button>
+           <button  class="btn btn-secondary m-2" @onclick="PreviousPage">Previous</button><button class="btn btn-secondary m-2"@onclick="NextPage">Next</button>
         </div>        
     </div>
 </div>
