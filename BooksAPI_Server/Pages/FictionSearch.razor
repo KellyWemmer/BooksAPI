@@ -8,13 +8,8 @@
         <h3 class="col-12 p-2">Search Fiction</h3>
     </div>
     <div class="row">
-        <div class="col-12">
-            <input type="text" placeholder="Search Title"/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12 mt-2">
-            <p class="fw-bold">Or:</p>
+        <div class="col-12 mb-2">
+            <input type="text" placeholder="Search Title" @bind-value="title"/>
         </div>
     </div>
     <div class="row">
@@ -119,6 +114,7 @@
     int? yearMax;
     int currentPage = 1;
     string author;
+    string title;
 
     BooksResponse booksResponse;
 
@@ -161,11 +157,16 @@
             query += $"first_publish_year%3A[{yearMin}+TO+{yearMax}]";
         }
 
+        if (title != null)
+        {
+            title = title.Replace(" ", "+");
+            query += $"title%3A{title}";
+        }
+
         string rawSubjects = string.Join("+", subjects).ToString();
         rawSubjects = $"({rawSubjects})";
 
         query += $"&subject={rawSubjects}";
-
 
 
         if (author != null)
