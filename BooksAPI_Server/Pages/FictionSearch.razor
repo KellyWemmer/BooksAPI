@@ -8,13 +8,18 @@
         <h3 class="col-12 p-2">Search Fiction</h3>
     </div>
     <div class="row">
-        <div class="col-12 p-2">
+        <div class="col-12">
             <input type="text" placeholder="Search Title"/>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 p-2">
-            <input type="text" placeholder="Search Author"/> 
+        <div class="col-12 mt-2">
+            <p class="fw-bold">Or:</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-2">
+            <input type="text" placeholder="Search Author" @bind-value="author"/> 
         </div>
     </div>
     <div class="row">
@@ -32,7 +37,6 @@
     </div>
     <div class="row">
         <div class="col-4 m-2 btn-group" role="group" aria-label="Basic checkbox toggle button group">
-            @*@(() => makes sure the code doesn't run before the button is clicked*@
             <input type="checkbox" class="btn-check" id="btnFantasy" autocomplete="off"/>
             <label class="btn btn-outline-primary fw-bold" for="btnFantasy" @onclick="@(() => AddSubject("fantasy"))">Fantasy</label>
             
@@ -95,9 +99,8 @@
             @foreach (var item in booksResponse.docs)
             {           
                 <div class="col-2">
-                    <p class="mt-3">@item.title"()"</p>
-                    <p>@item.first_publish_year</p>
-                    <img src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-M.jpg")" />
+                    <p class="mt-5 fw-bold">@item.title (@item.first_publish_year)</p>
+                    <img onclick="" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-M.jpg")" />
                 </div>
             }
         </div>
@@ -115,6 +118,7 @@
     int? yearMin;
     int? yearMax;
     int currentPage = 1;
+    string author;
 
     BooksResponse booksResponse;
 
@@ -154,13 +158,21 @@
 
         if (yearMin != null & yearMax != null)
         {
-            query += $"first_publish_year%3A[{yearMin}+TO+{yearMax}]&sort=new";
+            query += $"first_publish_year%3A[{yearMin}+TO+{yearMax}]";
         }
 
         string rawSubjects = string.Join("+", subjects).ToString();
         rawSubjects = $"({rawSubjects})";
 
         query += $"&subject={rawSubjects}";
+
+
+
+        if (author != null)
+        {            
+            author = author.Replace(" ", "+");
+            query += $"&author={author}";            
+        }
 
         query += $"&language:eng&sort=new&page={currentPage}";
 
