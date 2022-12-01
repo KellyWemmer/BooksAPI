@@ -10,7 +10,10 @@
                 }
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                @if(Book != null)
+                {
+                    <img src="@($"https://covers.openlibrary.org/b/id/{@Book.cover_i}-L.jpg")" />
+                }                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Want To Read</button>
@@ -26,7 +29,7 @@
     public bool ShowBackdrop = false;
     private Book Book { get; set; }
 
-    //Pass in the individual book as parameter on open
+    //Pass in the individual book as parameter on Open
     public void Open(Book book)
     {
         Book = book;
