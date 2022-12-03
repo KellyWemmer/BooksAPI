@@ -5,6 +5,8 @@ namespace BooksAPI_Server.Models
     public class Book
     {
         public string Id { get; set; }
+
+        public string key { get; set; }
         public string title { get; set; }
         
         public int first_publish_year { get; set; }

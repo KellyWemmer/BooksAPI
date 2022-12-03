@@ -49,5 +49,41 @@ namespace BooksAPI_Server.Services
             }
         }
 
+        public async Task<Work> SynopsisSearchAsync(string query)
+        {
+            var url = $"https://openlibrary.org{query}.json";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = await httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<Work>(responseBody);
+            }
+            else
+            {
+                throw new Exception("error occurred");
+            }
+        }
+
+        public Work SynopsisSearch(string query)
+        {
+            var url = $"https://openlibrary.org{query}.json";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var response = httpClient.Send(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var task = response.Content.ReadAsStringAsync();
+                task.Wait();
+                var responseBody = task.Result;
+                return JsonConvert.DeserializeObject<Work>(responseBody);
+            }
+            else
+            {
+                throw new Exception("error occurred");
+            }
+        }
     }
+
 }
