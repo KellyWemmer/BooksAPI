@@ -18,7 +18,12 @@
                             @if(Book != null)
                             {
                                 <img class="book-img" src="@($"https://covers.openlibrary.org/b/id/{@Book.cover_i}-L.jpg")" />
-                            }    
+                            } 
+                            <div class="row">
+                                <div class=col-6>
+                                    <p>iterate through all images of editions and print here</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-6">
                             @if(Work != null && Work.description != null && Work.description.value != null)
@@ -27,7 +32,8 @@
                             }
                             else
                             {
-                                <p>Description is not provided</p>
+                                <p>Description has not been provided.</p> 
+                                <p>(Once you click on image below, synopsis for each clicked edition will generate here.)</p>                               
                             }
                         </div>                  
                     </div>
