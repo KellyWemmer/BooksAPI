@@ -33,7 +33,8 @@
                             else
                             {
                                 <p>Description has not been provided.</p> 
-                                <button class="btn btn-secondary">Search Editions</button>
+                                //Toggle button to hidden once clicked
+                                <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>
                                 <p>(Once clicked, all editions will render below. Click on edition cover image and synopsis will generate here.)</p>                               
                             }
                         </div>                  
@@ -53,7 +54,10 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
     private Book Book { get; set; }
-    private Work Work;  
+    private Work Work;
+    private BooksAPI_Server.Components.BookModal Modal { get; set; }
+
+    BooksResponse booksResponse;   
 
 
     //Pass in the individual book as parameter on Open
@@ -76,6 +80,26 @@
         ShowBackdrop = false;
         StateHasChanged();
     }
+
+    private async Task SearchEditions()
+    {
+        List <string> author = Book.author_name;
+        string title = Book.title;
+
+        string query = "q=";
+
+        title = title.Replace(" ", "+");
+        query += $"title%3A{title}";               
+                  
+        
+        author = author.Replace(" ", "+");
+        query += $"&author={author}";    
+        
+        booksResponse = await OpenLibraryService.SearchEditions(query);        
+
+    }    
+
+    
 
     
 
