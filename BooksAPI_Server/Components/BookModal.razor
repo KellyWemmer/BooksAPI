@@ -83,7 +83,7 @@
 
     private async Task SearchEditions()
     {
-        List <string> author = Book.author_name;
+        List <string> authors = Book.author_name;
         string title = Book.title;
 
         string query = "q=";
@@ -101,9 +101,10 @@
         title = title.Replace(" ", "+");
         query += $"title%3A{title}";
 
+        string authorString = authors.Aggregate((a, b) => a + " " + b).ToString();
         //string authorString = author.Join(" ");
-        //author = author.Replace(" ", "+");
-        query += $"&author={author}";    
+        authorString = authorString.Replace(" ", "+");
+        query += $"&author={authorString}";    
         
         booksResponse = await OpenLibraryService.SearchEditions(query);        
 
