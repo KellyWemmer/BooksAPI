@@ -88,11 +88,21 @@
 
         string query = "q=";
 
+        if (title.Contains("("))
+        {
+            title = title.Remove(title.IndexOf(" ("));
+        }
+
+        if (title.Contains(":"))
+        {
+            title = title.Remove(title.IndexOf(":"));
+        }        
+
         title = title.Replace(" ", "+");
-        query += $"title%3A{title}";               
-                  
-        
-        author = author.Replace(" ", "+");
+        query += $"title%3A{title}";
+
+        //string authorString = author.Join(" ");
+        //author = author.Replace(" ", "+");
         query += $"&author={author}";    
         
         booksResponse = await OpenLibraryService.SearchEditions(query);        
