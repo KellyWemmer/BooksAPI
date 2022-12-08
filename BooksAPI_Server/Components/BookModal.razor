@@ -19,11 +19,19 @@
                             {
                                 <img class="book-img" src="@($"https://covers.openlibrary.org/b/id/{@Book.cover_i}-L.jpg")" />
                             } 
-                            <div class="row">
-                                <div class=col-6>
-                                    <p>Cover images of all editions will be printed here to click on</p>
+                            @if (booksResponse != null && booksResponse.docs != null)
+                            {
+                                <div class="row">
+                                    @foreach (var item in booksResponse.docs)
+                                    {
+                                        <div class=col-2>
+                                            <img class="btn" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-S.jpg")">
+                                        </div>
+                                    }
+                                    
                                 </div>
-                            </div>
+                            } 
+                            
                         </div>
                         <div class="col-6">
                             @if(Work != null && Work.description != null && Work.description.value != null)
@@ -32,10 +40,9 @@
                             }
                             else
                             {
-                                <p>Description has not been provided.</p> 
+                                <p>Description has not been provided. Search all editions?</p> 
                                 //Toggle button to hidden once clicked
-                                <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>
-                                <p>(Once clicked, all editions will render below. Click on edition cover image and synopsis will generate here.)</p>                               
+                                <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>                              
                             }
                         </div>                  
                     </div>
@@ -102,12 +109,10 @@
         query += $"title%3A{title}";
 
         string authorString = authors.Aggregate((a, b) => a + " " + b).ToString();
-        //string authorString = author.Join(" ");
         authorString = authorString.Replace(" ", "+");
         query += $"&author={authorString}";    
         
-        booksResponse = await OpenLibraryService.SearchEditions(query);        
-
+        booksResponse = await OpenLibraryService.SearchEditions(query);   
     }    
 
     
