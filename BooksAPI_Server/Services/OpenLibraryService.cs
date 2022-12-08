@@ -70,7 +70,7 @@ namespace BooksAPI_Server.Services
 
         public async Task<BooksResponse> SearchEditions(string query)
         {
-            var url = $"https://openlibrary.org/search.json?{query}";
+            var url = $"https://openlibrary.org/search.json?{query}&mode=everything";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await httpClient.SendAsync(request);
 
@@ -84,7 +84,6 @@ namespace BooksAPI_Server.Services
                 throw new Exception("error occurred");
             }
         }
-
 
     }
 

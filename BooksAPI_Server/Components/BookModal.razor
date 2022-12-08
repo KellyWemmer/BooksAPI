@@ -25,7 +25,15 @@
                                     @foreach (var item in booksResponse.docs)
                                     {
                                         <div class=col-2>
-                                            <img class="btn" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-S.jpg")">
+                                            @if (item.cover_i != 0)
+                                            {
+                                                @item.key
+                                                <img class="editions-img btn" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-S.jpg")" @onclick="() => GetNextEdition(item)">
+                                            } 
+                                            else
+                                            {
+                                                <img class="editions-img btn" @onclick="() => GetNextEdition(item)" src="@($"https://images.unsplash.com/photo-1528459199957-0ff28496a7f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80")" >
+                                            }
                                         </div>
                                     }
                                     
@@ -70,14 +78,14 @@
     //Pass in the individual book as parameter on Open
     public void Open(Book book)
     {
+        booksResponse = null;
         Book = book;
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
         string query = Book.key;
-        Work = OpenLibraryService.SynopsisSearch(query);        
+        Work = OpenLibraryService.SynopsisSearch(query);
         StateHasChanged();
-
     }
 
     public void Close()
@@ -111,9 +119,15 @@
         string authorString = authors.Aggregate((a, b) => a + " " + b).ToString();
         authorString = authorString.Replace(" ", "+");
         query += $"&author={authorString}";    
-        
+
         booksResponse = await OpenLibraryService.SearchEditions(query);   
-    }    
+    }   
+
+    private void GetNextEdition(Book book)
+    {
+        string query = Book.key;
+        Work = OpenLibraryService.SynopsisSearch(query); 
+    }
 
     
 

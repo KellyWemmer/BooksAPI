@@ -85,3 +85,8 @@ a, .btn-link {
     margin-top: 2%
 }
 
+.editions-imgs {
+    max-height: 30%;
+    max-width: 15%
+}
+
