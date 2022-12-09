@@ -125,8 +125,9 @@
 
     private void GetNextEdition(Book book)
     {
-        string query = Book.key;
-        Work = OpenLibraryService.SynopsisSearch(query); 
+        string query = book.key;
+        Work = OpenLibraryService.SynopsisSearch(query);
+
     }
 
     
