@@ -26,17 +26,15 @@
                                     {
                                         <div class=col-2>
                                             @if (item.cover_i != 0)
-                                            {
-                                                @item.key
-                                                <img class="editions-img btn" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-S.jpg")" @onclick="() => GetNextEdition(item)">
+                                            {                                                
+                                                <img class="btn" src="@($"https://covers.openlibrary.org/b/id/{@item.cover_i}-S.jpg")" @onclick="() => GetNextEdition(item)">
                                             } 
                                             else
                                             {
-                                                <img class="editions-img btn" @onclick="() => GetNextEdition(item)" src="@($"https://images.unsplash.com/photo-1528459199957-0ff28496a7f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80")" >
+                                                <img class="default-img btn" @onclick="() => GetNextEdition(item)" src="@($"https://images.unsplash.com/photo-1528459199957-0ff28496a7f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=443&q=80")" >
                                             }
                                         </div>
                                     }
-                                    
                                 </div>
                             } 
                             
@@ -48,11 +46,23 @@
                             }
                             else
                             {
-                                <p>Description has not been provided. Search all editions?</p> 
-                                //Toggle button to hidden once clicked
-                                <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>                              
+                                <p>Description has not been provided.</p>
+                                @if (buttonHidden == false)
+                                {
+                                    <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>                              
+                                    
+                                }
+                                
                             }
                         </div>                  
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            @if (Book != null && Book.isbn != null && ISBN != null)
+                            {
+                                <a href='@($"https://www.amazon.com/dp/{ISBN}/?tag=internetarchi-20")' class="link-amazon">Search Amazon</a>
+                            } 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,11 +77,12 @@
 @code {
     public string ModalDisplay = "none;";
     public string ModalClass = "";
+    public string ISBN = "";
     public bool ShowBackdrop = false;
     private Book Book { get; set; }
     private Work Work;
     private BooksAPI_Server.Components.BookModal Modal { get; set; }
-
+    bool buttonHidden = false;
     BooksResponse booksResponse;   
 
 
@@ -83,8 +94,10 @@
         ModalDisplay = "block;";
         ModalClass = "Show";
         ShowBackdrop = true;
+        buttonHidden = false;
         string query = Book.key;
         Work = OpenLibraryService.SynopsisSearch(query);
+        GetIsbn10Digit(Book.isbn);
         StateHasChanged();
     }
 
@@ -100,6 +113,7 @@
     {
         List <string> authors = Book.author_name;
         string title = Book.title;
+        buttonHidden = true;
 
         string query = "q=";
 
@@ -127,7 +141,12 @@
     {
         string query = book.key;
         Work = OpenLibraryService.SynopsisSearch(query);
+    }
 
+    private string GetIsbn10Digit(List<string> ISBNs)
+    {
+        ISBN = ISBNs.FirstOrDefault(i => i.Length <= 10);
+        return ISBN;
     }
 
     
