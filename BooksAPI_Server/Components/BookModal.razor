@@ -37,7 +37,18 @@
                                     }
                                 </div>
                             } 
-                            
+                            <div class="row">
+                                <div class="col">
+                                    @if (Book != null && Book.isbn != null && ISBN != null)
+                                    {
+                                        <a href='@($"https://www.amazon.com/dp/{ISBN}/?tag=internetarchi-20")' class="link-amazon">Search Amazon</a>
+                                    }
+                                    @if (Book != null && Book.isbn == null || ISBN == null)
+                                    {
+                                        <a href='@GetAmazonSearchUrl(Book)' class="link-amazon">Search Amazon</a>
+                                    }
+                                </div>
+                            </div>                            
                         </div>
                         <div class="col-6">
                             @if(Work != null && Work.description != null && Work.description.value != null)
@@ -51,19 +62,10 @@
                                 {
                                     <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>                              
                                     
-                                }
-                                
+                                }                                
                             }
                         </div>                  
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            @if (Book != null && Book.isbn != null && ISBN != null)
-                            {
-                                <a href='@($"https://www.amazon.com/dp/{ISBN}/?tag=internetarchi-20")' class="link-amazon">Search Amazon</a>
-                            } 
-                        </div>
-                    </div>
+                    </div>                    
                 </div>
             </div>
             <div class="modal-footer">
@@ -145,9 +147,47 @@
 
     private string GetIsbn10Digit(List<string> ISBNs)
     {
-        ISBN = ISBNs.FirstOrDefault(i => i.Length <= 10);
-        return ISBN;
+        if (ISBNs != null)
+        {
+            ISBN = ISBNs.FirstOrDefault(i => i.Length <= 10);
+            return ISBN;
+        }       
+
+        else
+        {
+            ISBN = null;
+            return ISBN;
+        }
+
     }
+
+    private string GetAmazonSearchUrl(Book book)
+    {
+        List<string> authors = Book.author_name;
+        string title = Book.title;
+        var url = "https://www.amazon.com/s?";
+        string query = "k=";
+
+        if (title.Contains("("))
+        {
+            title = title.Remove(title.IndexOf(" ("));
+        }
+
+        if (title.Contains(":"))
+        {
+            title = title.Remove(title.IndexOf(":"));
+        }
+
+        title = title.Replace(" ", "+");
+        query += $"{title}+";
+
+        string authorString = authors.Aggregate((a, b) => a + " " + b).ToString();
+        authorString = authorString.Replace(" ", "+");
+        query += $"{authorString}";
+
+        return url;
+    }
+}
 
     
 
