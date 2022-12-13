@@ -41,11 +41,11 @@
                                 <div class="col">
                                     @if (Book != null && Book.isbn != null && ISBN != null)
                                     {
-                                        <a href='@($"https://www.amazon.com/dp/{ISBN}/?tag=internetarchi-20")' class="link-amazon">Search Amazon</a>
+                                        <a href='@($"https://www.amazon.com/dp/{ISBN}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Search Amazon</a>
                                     }
                                     @if (Book != null && Book.isbn == null || ISBN == null)
                                     {
-                                        <a href='@GetAmazonSearchUrl(Book)' class="link-amazon">Search Amazon</a>
+                                        <a href='@GetAmazonSearchUrl(Book)' target="_blank" class="link-amazon">Search Amazon</a>
                                     }
                                 </div>
                             </div>                            
@@ -165,8 +165,7 @@
     {
         List<string> authors = Book.author_name;
         string title = Book.title;
-        var url = "https://www.amazon.com/s?";
-        string query = "k=";
+        var url = $"https://www.amazon.com/s?k=";
 
         if (title.Contains("("))
         {
@@ -179,11 +178,11 @@
         }
 
         title = title.Replace(" ", "+");
-        query += $"{title}+";
+        url += $"{title}+";
 
         string authorString = authors.Aggregate((a, b) => a + " " + b).ToString();
         authorString = authorString.Replace(" ", "+");
-        query += $"{authorString}";
+        url += $"{authorString}";
 
         return url;
     }

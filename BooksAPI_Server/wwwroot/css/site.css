@@ -86,7 +86,7 @@ a, .btn-link {
 }
 
 .default-img {
-    height: 12%;
-    width: auto;
+    max-height: 75px;
+    max-width: auto;
 }
 
