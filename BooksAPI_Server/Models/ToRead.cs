@@ -6,11 +6,13 @@ namespace BooksAPI_Server.Models
     {
         [Key]
         public string Id { get; set; }
-        public string key { get; set; }
-        public string title { get; set; }
+        public string Key { get; set; }
+        public string Title { get; set; }
 
-        public List<string> isbn { get; set; }
+        public string TenDigitIsbn { get; set; }
+        public string ThirteenDigitIsbn { get; set; }
 
-        public List<string> author_name { get; set; }
+        //Sets many to many relationship
+        public ICollection<Author> Author { get; set; }
     }
 }
