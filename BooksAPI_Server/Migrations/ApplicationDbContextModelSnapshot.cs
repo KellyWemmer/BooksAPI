@@ -50,7 +50,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasIndex("ToReadId");
 
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.Favorite", b =>
@@ -75,7 +75,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Favorite");
+                    b.ToTable("Favorites");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.FavoriteAuthor", b =>
@@ -98,7 +98,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasIndex("FavoriteId");
 
-                    b.ToTable("FavoriteAuthor");
+                    b.ToTable("FavoritesAuthors");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.Finished", b =>
@@ -146,7 +146,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasIndex("FinishedId");
 
-                    b.ToTable("FinishedAuthor");
+                    b.ToTable("FinishedAuthors");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.ToRead", b =>
@@ -171,7 +171,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ToRead");
+                    b.ToTable("ToReads");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.ToReadAuthor", b =>
@@ -194,7 +194,7 @@ namespace BooksAPIServer.Migrations
 
                     b.HasIndex("ToReadId");
 
-                    b.ToTable("ToReadAuthor");
+                    b.ToTable("ToReadsAuthors");
                 });
 
             modelBuilder.Entity("BooksAPI_Server.Models.Author", b =>

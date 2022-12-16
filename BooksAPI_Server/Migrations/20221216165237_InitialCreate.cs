@@ -11,7 +11,7 @@ namespace BooksAPIServer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Favorite",
+                name: "Favorites",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -23,7 +23,7 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Favorite", x => x.Id);
+                    table.PrimaryKey("PK_Favorites", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -43,7 +43,7 @@ namespace BooksAPIServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ToRead",
+                name: "ToReads",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -55,11 +55,11 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToRead", x => x.Id);
+                    table.PrimaryKey("PK_ToReads", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Author",
+                name: "Authors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,26 +71,26 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Author", x => x.Id);
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Author_Favorite_FavoriteId",
+                        name: "FK_Authors_Favorites_FavoriteId",
                         column: x => x.FavoriteId,
-                        principalTable: "Favorite",
+                        principalTable: "Favorites",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Author_Finished_FinishedId",
+                        name: "FK_Authors_Finished_FinishedId",
                         column: x => x.FinishedId,
                         principalTable: "Finished",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Author_ToRead_ToReadId",
+                        name: "FK_Authors_ToReads_ToReadId",
                         column: x => x.ToReadId,
-                        principalTable: "ToRead",
+                        principalTable: "ToReads",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "FavoriteAuthor",
+                name: "FavoritesAuthors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -100,23 +100,23 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FavoriteAuthor", x => x.Id);
+                    table.PrimaryKey("PK_FavoritesAuthors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FavoriteAuthor_Author_AuthorId",
+                        name: "FK_FavoritesAuthors_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Author",
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FavoriteAuthor_Favorite_FavoriteId",
+                        name: "FK_FavoritesAuthors_Favorites_FavoriteId",
                         column: x => x.FavoriteId,
-                        principalTable: "Favorite",
+                        principalTable: "Favorites",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FinishedAuthor",
+                name: "FinishedAuthors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -126,15 +126,15 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FinishedAuthor", x => x.Id);
+                    table.PrimaryKey("PK_FinishedAuthors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FinishedAuthor_Author_AuthorId",
+                        name: "FK_FinishedAuthors_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Author",
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FinishedAuthor_Finished_FinishedId",
+                        name: "FK_FinishedAuthors_Finished_FinishedId",
                         column: x => x.FinishedId,
                         principalTable: "Finished",
                         principalColumn: "Id",
@@ -142,7 +142,7 @@ namespace BooksAPIServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ToReadAuthor",
+                name: "ToReadsAuthors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -152,64 +152,64 @@ namespace BooksAPIServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ToReadAuthor", x => x.Id);
+                    table.PrimaryKey("PK_ToReadsAuthors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ToReadAuthor_Author_AuthorId",
+                        name: "FK_ToReadsAuthors_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Author",
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ToReadAuthor_ToRead_ToReadId",
+                        name: "FK_ToReadsAuthors_ToReads_ToReadId",
                         column: x => x.ToReadId,
-                        principalTable: "ToRead",
+                        principalTable: "ToReads",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Author_FavoriteId",
-                table: "Author",
+                name: "IX_Authors_FavoriteId",
+                table: "Authors",
                 column: "FavoriteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Author_FinishedId",
-                table: "Author",
+                name: "IX_Authors_FinishedId",
+                table: "Authors",
                 column: "FinishedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Author_ToReadId",
-                table: "Author",
+                name: "IX_Authors_ToReadId",
+                table: "Authors",
                 column: "ToReadId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteAuthor_AuthorId",
-                table: "FavoriteAuthor",
+                name: "IX_FavoritesAuthors_AuthorId",
+                table: "FavoritesAuthors",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteAuthor_FavoriteId",
-                table: "FavoriteAuthor",
+                name: "IX_FavoritesAuthors_FavoriteId",
+                table: "FavoritesAuthors",
                 column: "FavoriteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinishedAuthor_AuthorId",
-                table: "FinishedAuthor",
+                name: "IX_FinishedAuthors_AuthorId",
+                table: "FinishedAuthors",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinishedAuthor_FinishedId",
-                table: "FinishedAuthor",
+                name: "IX_FinishedAuthors_FinishedId",
+                table: "FinishedAuthors",
                 column: "FinishedId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ToReadAuthor_AuthorId",
-                table: "ToReadAuthor",
+                name: "IX_ToReadsAuthors_AuthorId",
+                table: "ToReadsAuthors",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ToReadAuthor_ToReadId",
-                table: "ToReadAuthor",
+                name: "IX_ToReadsAuthors_ToReadId",
+                table: "ToReadsAuthors",
                 column: "ToReadId");
         }
 
@@ -217,25 +217,25 @@ namespace BooksAPIServer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FavoriteAuthor");
+                name: "FavoritesAuthors");
 
             migrationBuilder.DropTable(
-                name: "FinishedAuthor");
+                name: "FinishedAuthors");
 
             migrationBuilder.DropTable(
-                name: "ToReadAuthor");
+                name: "ToReadsAuthors");
 
             migrationBuilder.DropTable(
-                name: "Author");
+                name: "Authors");
 
             migrationBuilder.DropTable(
-                name: "Favorite");
+                name: "Favorites");
 
             migrationBuilder.DropTable(
                 name: "Finished");
 
             migrationBuilder.DropTable(
-                name: "ToRead");
+                name: "ToReads");
         }
     }
 }
