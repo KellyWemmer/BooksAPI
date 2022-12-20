@@ -1,6 +1,8 @@
 ﻿@using BooksAPI_Server.Models
+@using BooksAPI_Server.Repositories;
 @using BooksAPI_Server.Services
 @inject OpenLibraryService OpenLibraryService
+@inject ToReadRepository ToReadRepository
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -70,7 +72,7 @@
             </div>
             <div class="modal-footer">
                 <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl"></i>
-                <button type="button" class="btn btn-primary">Want To Read</button>
+                <button title="add-ToRead" type="button" class="add-ToRead btn btn-primary" @*@onclick=AddToRead*@>Want To Read</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
             </div>
         </div>
@@ -186,6 +188,17 @@
 
         return url;
     }
+
+    //private Task AddToRead()
+    //{
+    //    ToRead toRead = new ToRead();
+    //    //set props
+    //    ToReadRepository.CreateToRead(toRead);
+    //    //authors
+    //    //trauthor
+    //}
+
+    
 }
 
     

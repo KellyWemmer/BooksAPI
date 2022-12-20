@@ -1,4 +1,5 @@
 using BooksAPI_Server.Data;
+using BooksAPI_Server.Repositories;
 using BooksAPI_Server.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,6 +17,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddHttpClient(); //Similar to axios client
 builder.Services.AddScoped<OpenLibraryService>();
+builder.Services.AddScoped<ToReadRepository>();
 
 var app = builder.Build();
 
