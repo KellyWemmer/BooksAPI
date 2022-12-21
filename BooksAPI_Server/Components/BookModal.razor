@@ -189,14 +189,33 @@
         return url;
     }
 
-    //private Task AddToRead()
-    //{
-    //    ToRead toRead = new ToRead();
-    //    //set props
-    //    ToReadRepository.CreateToRead(toRead);
-    //    //authors
-    //    //trauthor
-    //}
+    private Task AddToRead()
+    {
+        ToRead toRead = new ToRead();
+        //set props
+        toRead.Key = Book.key;
+        toRead.Title = Book.title;
+
+        if (Book.isbn != null)
+        {
+            toRead.TenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length <= 10);
+            toRead.ThirteenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length == 13);
+        }
+
+        ToReadRepository.CreateToRead(toRead);
+        //authors
+        Author author = new Author();
+       
+
+        if (Book.author_name != null)
+        {
+            foreach (string item in Book.author_name)
+            {
+                author.AuthorName = item;      
+            }
+        }
+        //trauthor
+    }
 
     
 }
