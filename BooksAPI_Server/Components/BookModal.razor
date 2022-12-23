@@ -3,6 +3,7 @@
 @using BooksAPI_Server.Services
 @inject OpenLibraryService OpenLibraryService
 @inject ToReadRepository ToReadRepository
+@inject AuthorRepository AuthorRepository
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -203,23 +204,40 @@
         }
 
         ToReadRepository.CreateToRead(toRead);
-       
+
 
         if (Book.author_name != null)
         {
-            foreach (string item in Book.author_name)
+            foreach (string bookAuthor in Book.author_name)
             {
-                //authors
-                Author author = new Author();
-                //get existing author, or create new author
-                
-                author.AuthorName = item;      
+                //check to see if author is in author table, if so, create new ToReadAuthor
+                Author author = AuthorRepository.GetAuthorByName(bookAuthor);
 
-            }
+                if (bookAuthor != null)
+                {
+                    //create ToReadAuthor in ToReadsAuthors Table
+                    ToReadAuthor toReadAuthor = new ToReadAuthor();
+                    toReadAuthor.ToReadId = toRead.Id;
+                    toReadAuthor.AuthorId = author.Id;
+
+
+
+                }
+                //Create new Author in author table
+                else
+                {
+                    AuthorRepository.CreateAuthor(author);     
+                }
+
+                    
+                
+                
+                author.AuthorName = bookAuthor;      
+
+            
 
 
         }
-        //trauthor
     }
 
     
