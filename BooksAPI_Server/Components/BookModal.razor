@@ -4,6 +4,7 @@
 @inject OpenLibraryService OpenLibraryService
 @inject ToReadRepository ToReadRepository
 @inject AuthorRepository AuthorRepository
+@inject ToReadAuthorRepository ToReadAuthorRepository
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -73,7 +74,7 @@
             </div>
             <div class="modal-footer">
                 <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl"></i>
-                <button title="add-ToRead" type="button" class="add-ToRead btn btn-primary" @*@onclick=AddToRead*@>Want To Read</button>
+                <button title="add-ToRead" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
             </div>
         </div>
@@ -190,7 +191,7 @@
         return url;
     }
 
-    private Task AddToRead()
+    private void AddToRead()
     {
         ToRead toRead = new ToRead();
         //set props
@@ -203,7 +204,7 @@
             toRead.ThirteenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length == 13);
         }
 
-        ToReadRepository.CreateToRead(toRead);
+         toRead = ToReadRepository.CreateToRead(toRead);
 
 
         if (Book.author_name != null)
@@ -213,26 +214,31 @@
                 //check to see if author is in author table, if so, create new ToReadAuthor
                 Author author = AuthorRepository.GetAuthorByName(bookAuthor);
 
-                if (bookAuthor != null)
+                if (author != null)
                 {
-                    //create ToReadAuthor in ToReadsAuthors Table
+                    //Get foreign keys for ToReadAuthor in ToReadsAuthors Table
                     ToReadAuthor toReadAuthor = new ToReadAuthor();
                     toReadAuthor.ToReadId = toRead.Id;
                     toReadAuthor.AuthorId = author.Id;
 
-
-
+                    //Create ToReadAuthor
+                    toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
                 }
                 //Create new Author in author table
                 else
-                {
-                    AuthorRepository.CreateAuthor(author);     
-                }
-
+                {                    
+                    author = new Author();
+                    author.AuthorName = bookAuthor; 
+                    author = AuthorRepository.CreateAuthor(author);
                     
+                    ToReadAuthor toReadAuthor = new ToReadAuthor();
+                    toReadAuthor.ToReadId = toRead.Id;
+                    toReadAuthor.AuthorId = author.Id;
+
+                    toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
+                }                  
                 
-                
-                author.AuthorName = bookAuthor;      
+                    
 
             
 

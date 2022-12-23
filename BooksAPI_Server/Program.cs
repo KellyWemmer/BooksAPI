@@ -19,6 +19,7 @@ builder.Services.AddHttpClient(); //Similar to axios client
 builder.Services.AddScoped<OpenLibraryService>();
 builder.Services.AddScoped<ToReadRepository>();
 builder.Services.AddScoped<AuthorRepository>();
+builder.Services.AddScoped<ToReadAuthorRepository>();
 
 var app = builder.Build();
 

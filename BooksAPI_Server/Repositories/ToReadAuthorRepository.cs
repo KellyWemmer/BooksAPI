@@ -1,7 +1,22 @@
-﻿namespace BooksAPI_Server.Repositories
+﻿using BooksAPI_Server.Data;
+using BooksAPI_Server.Models;
+
+namespace BooksAPI_Server.Repositories
 {
     public class ToReadAuthorRepository
     {
-        //create ToReadAuthor
+        private readonly ApplicationDbContext _context;
+
+        public ToReadAuthorRepository(ApplicationDbContext context)
+        {
+            this._context = context;
+        }
+
+        internal ToReadAuthor CreateToReadAuthor(ToReadAuthor newToReadAuthor) 
+        {
+            _context.ToReadsAuthors.Add(newToReadAuthor);
+            _context.SaveChanges();
+            return newToReadAuthor;
+        }
     }
 }
