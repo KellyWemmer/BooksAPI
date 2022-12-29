@@ -5,6 +5,7 @@
 @inject ToReadRepository ToReadRepository
 @inject AuthorRepository AuthorRepository
 @inject ToReadAuthorRepository ToReadAuthorRepository
+@inject IJSRuntime jsRuntime
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -191,7 +192,7 @@
         return url;
     }
 
-    private void AddToRead()
+    private async Task AddToRead()
     {
         ToRead toRead = new ToRead();
         //set props
@@ -238,8 +239,8 @@
                     toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
                 }                  
                 
-                    
-
+               // here
+                await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your reading list");
             
 
 
