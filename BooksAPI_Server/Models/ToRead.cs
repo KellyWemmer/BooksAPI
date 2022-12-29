@@ -13,6 +13,6 @@ namespace BooksAPI_Server.Models
         public string ThirteenDigitIsbn { get; set; }
 
         //Sets many to many relationship
-        public ICollection<Author> Author { get; set; }
+        public ICollection<ToReadAuthor> Author { get; set; }
     }
 }
