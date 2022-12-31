@@ -1,12 +1,14 @@
 ﻿@page "/readingLists"
-
+@using BooksAPI_Server.Models
+@using BooksAPI_Server.Repositories;
+@inject ToReadRepository ToReadRepository
 
 <div class="container-fluid">
     <div class="row">
         <h5 class="col-12">Fiction Reading Lists</h5>
-    </div>
+    </div>    
     <div class="row">
-        <h6>Want to Read</h6>
+        <button class="fiction-to-read" @onclick="GetFictionToReads">Want to Read</button>
     </div>
     <div class="row">
         <h6>Favorites</h6>
@@ -27,8 +29,27 @@
     <div class="row">
         <h6>Finished</h6>
     </div>
+    @if (toReads != null)
+    {
+        <div class="row">
+            @foreach (var item in toReads)
+            {
+                <div class="col-2">
+                    
+                    <p>@item.Title</p>
+                </div>
+            }
+        </div>    
+    }
 </div>
 
 @code {
+    List<ToRead> toReads;
+
+    private void GetFictionToReads()
+    {
+        toReads = ToReadRepository.GetFictionToReads();
+    }
+
 
 }

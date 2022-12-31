@@ -13,7 +13,7 @@ namespace BooksAPI_Server.Repositories
             this._context = context;
         }
 
-        internal List<ToRead> GetToReads() 
+        internal List<ToRead> GetFictionToReads() 
         {
             return _context.ToReads.ToList();
         }
