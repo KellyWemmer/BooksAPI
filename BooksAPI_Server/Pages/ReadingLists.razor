@@ -8,7 +8,7 @@
         <h5 class="col-12">Fiction Reading Lists</h5>
     </div>    
     <div class="row">
-        <button class="fiction-to-read" @onclick="GetFictionToReads">Want to Read</button>
+        <button class="btn btn-primary col-1 fiction-to-read" @onclick="GetFictionToReads">Want to Read</button>
     </div>
     <div class="row">
         <h6>Favorites</h6>
@@ -35,8 +35,7 @@
             @foreach (var item in toReads)
             {
                 <div class="col-2">
-                    
-                    <p>@item.Title</p>
+                    <img class="btn" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
                 </div>
             }
         </div>    
