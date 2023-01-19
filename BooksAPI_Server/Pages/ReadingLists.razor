@@ -38,22 +38,21 @@
             {
                 <div class="col-2">
                     <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
-                    <div class="row">
-                        <div class="col-6">
-                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites"></i>
-                            <i type="button" class="fa-solid fa-book" title="Finished"></i>                            
+                    <div class="mt-2 row">
+                        <div class="col-4">
+                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites" @onclick="AddToFavorites"></i>
+                            <i type="button" class="fa-solid fa-book" title="Finished" @onclick="BookIsFinished"></i>                            
                         </div>
-                        <div class="col-6">
+                        <div class="col-8 justify-content-start">
                             @if (item.TenDigitIsbn != null)
                             {
-                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Search Amazon</a>
+                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
                             }
                             else
                             {
-                                @*<a href='@GetAmazonSearchUrl(item)' target="_blank" class="link-amazon">Search Amazon</a>*@
+                                //Title & Author Search Amazon??
                             }
                         </div>
-
                     </div>
                 </div>
             }
@@ -65,17 +64,24 @@
     List<ToRead> toReads = null;
 
 
-
-
     private void GetFictionToReads()
     {
         toReads = ToReadRepository.GetFictionToReads();
     }
 
-    //private string GetAmazonSearchUrl(ToRead item)
-    //{
-    //    return
-    //}
+    private void AddToFavorites()
+    {
+
+    }
+
+    private void BookIsFinished()
+    {
+        
+    }
+
+
+
+    
 
    
 

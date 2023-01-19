@@ -14,7 +14,7 @@ namespace BooksAPI_Server.Repositories
 
         internal ToReadAuthor CreateToReadAuthor(ToReadAuthor newToReadAuthor) 
         {
-            _context.ToReadsAuthors.Add(newToReadAuthor);
+            _context.ToReadAuthors.Add(newToReadAuthor);
             _context.SaveChanges();
             return newToReadAuthor;
         }

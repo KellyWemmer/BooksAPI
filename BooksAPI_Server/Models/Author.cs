@@ -8,5 +8,7 @@ namespace BooksAPI_Server.Models
         public int Id { get; set; }
 
         public string AuthorName { get; set; }
+
+        public ICollection<ToReadAuthor> ToReadAuthors { get; set; }
     }
 }

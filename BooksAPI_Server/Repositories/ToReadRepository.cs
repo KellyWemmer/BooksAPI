@@ -1,5 +1,6 @@
 ﻿using BooksAPI_Server.Data;
 using BooksAPI_Server.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 
 namespace BooksAPI_Server.Repositories
@@ -15,7 +16,7 @@ namespace BooksAPI_Server.Repositories
 
         internal List<ToRead> GetFictionToReads() 
         {
-            return _context.ToReads.ToList();
+            return _context.ToReads.Include("ToReadAuthors").Include("ToReadAuthors.Author").ToList();
         }
 
         internal ToRead CreateToRead(ToRead newToRead) 

@@ -6,9 +6,9 @@ namespace BooksAPI_Server.Data
     public class ApplicationDbContext : DbContext 
     {
         public DbSet<Favorite> Favorites { get; set; }
-        public DbSet<FavoriteAuthor> FavoritesAuthors { get; set; }
+        public DbSet<FavoriteAuthor> FavoriteAuthors { get; set; }
         public DbSet<ToRead> ToReads { get; set; }
-        public DbSet<ToReadAuthor> ToReadsAuthors { get; set; }
+        public DbSet<ToReadAuthor> ToReadAuthors { get; set; }
         public DbSet<Finished> Finished { get; set; }   
         public DbSet<FinishedAuthor> FinishedAuthors { get; set; }
 
