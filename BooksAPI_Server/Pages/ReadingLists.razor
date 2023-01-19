@@ -3,6 +3,7 @@
 @using BooksAPI_Server.Repositories;
 @inject ToReadRepository ToReadRepository
 
+
 <div class="container-fluid">
     <div class="row">
         <h5 class="col-12">Fiction Reading Lists</h5>
@@ -29,13 +30,31 @@
     <div class="row">
         <h6>Finished</h6>
     </div>
+
     @if (toReads != null)
     {
         <div class="row">
             @foreach (var item in toReads)
             {
                 <div class="col-2">
-                    <img class="btn" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
+                    <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
+                    <div class="row">
+                        <div class="col-6">
+                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites"></i>
+                            <i type="button" class="fa-solid fa-book" title="Finished"></i>                            
+                        </div>
+                        <div class="col-6">
+                            @if (item.TenDigitIsbn != null)
+                            {
+                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Search Amazon</a>
+                            }
+                            else
+                            {
+                                @*<a href='@GetAmazonSearchUrl(item)' target="_blank" class="link-amazon">Search Amazon</a>*@
+                            }
+                        </div>
+
+                    </div>
                 </div>
             }
         </div>    
@@ -43,12 +62,22 @@
 </div>
 
 @code {
-    List<ToRead> toReads;
+    List<ToRead> toReads = null;
+
+
+
 
     private void GetFictionToReads()
     {
         toReads = ToReadRepository.GetFictionToReads();
     }
+
+    //private string GetAmazonSearchUrl(ToRead item)
+    //{
+    //    return
+    //}
+
+   
 
 
 }
