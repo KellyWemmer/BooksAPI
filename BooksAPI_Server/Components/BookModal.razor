@@ -12,8 +12,8 @@
             <div class="modal-header">
                 @if(Book != null)
                 {                   
-                    <h5 class="book-title modal-title fw-bold">@Book.title</h5>
-                    <button type="button" class="close btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => Close()"></button>
+                    <h5 class="modal-title fw-bold">@Book.title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="() => Close()"></button>
                 }
             </div>
             <div class="modal-body">
@@ -24,7 +24,7 @@
                             {
                                 <img class="book-img" src="@($"https://covers.openlibrary.org/b/id/{@Book.cover_i}-L.jpg")" />
                             } 
-                            @if (booksResponse != null && booksResponse.docs != null)
+                            @*@if (booksResponse != null && booksResponse.docs != null)
                             {
                                 <div class="row">
                                     @foreach (var item in booksResponse.docs)
@@ -41,7 +41,19 @@
                                         </div>
                                     }
                                 </div>
-                            } 
+                            } *@
+                                                  
+                        </div>
+                        <div class="col-6">
+                            @if(Work != null && Work.description != null && Work.description.value != null)
+                            {                                
+                                <p class="small-font">@Work.description.value</p>
+                            }
+                            else
+                            {
+                                <p>Description has not been provided.</p>
+                                       
+                            }
                             <div class="row">
                                 <div class="col">
                                     @if (Book != null && Book.isbn != null && ISBN != null)
@@ -53,30 +65,15 @@
                                         <a href='@GetAmazonSearchUrl(Book)' target="_blank" class="link-amazon">Search Amazon</a>
                                     }
                                 </div>
-                            </div>                            
-                        </div>
-                        <div class="col-6">
-                            @if(Work != null && Work.description != null && Work.description.value != null)
-                            {                                
-                                <p>@Work.description.value</p>
-                            }
-                            else
-                            {
-                                <p>Description has not been provided.</p>
-                                @if (buttonHidden == false)
-                                {
-                                    <button class="btn btn-secondary" @onclick="SearchEditions">Search Editions</button>                              
-                                    
-                                }                                
-                            }
+                            </div>
                         </div>                  
                     </div>                    
                 </div>
             </div>
             <div class="modal-footer">
-                <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl"></i>
-                <button title="add-ToRead" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
+                <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites"></i>
+                <button title="Add to Reads List" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
+                <button title="Add to Finished List"type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
             </div>
         </div>
     </div>
@@ -95,7 +92,7 @@
 
 
     //Pass in the individual book as parameter on Open
-    public void Open(Book book)
+    public async Task Open(Book book)
     {
         booksResponse = null;
         Book = book;
@@ -103,8 +100,22 @@
         ModalClass = "Show";
         ShowBackdrop = true;
         buttonHidden = false;
-        string query = Book.key;
-        Work = OpenLibraryService.SynopsisSearch(query);
+        Work = null;
+
+        await SearchEditions();
+        
+        if(booksResponse != null && booksResponse.docs != null)
+        {
+            foreach (var item in booksResponse.docs)
+            {
+                GetNextEdition(item);
+                if(Work != null && Work.description != null && Work.description.value != null)
+                {
+                    break;
+                }
+            }            
+        }
+        
         GetIsbn10Digit(Book.isbn);
         StateHasChanged();
     }

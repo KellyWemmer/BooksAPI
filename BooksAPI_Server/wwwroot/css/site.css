@@ -63,19 +63,6 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.close {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;    
-}
-
-.book-title {
-    position: absolute;
-    left: 1rem;
-    top: 1rem;
-    width: 85%;
-}
-
 .book-img {
     max-width: 100%;
     max-height: 100%;
@@ -88,5 +75,9 @@ a, .btn-link {
 .default-img {
     max-height: 75px;
     max-width: auto;
+}
+
+.small-font{
+    font-size: small;
 }
 
