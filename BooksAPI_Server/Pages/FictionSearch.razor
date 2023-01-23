@@ -2,6 +2,7 @@
 @using BooksAPI_Server.Models
 @using BooksAPI_Server.Services
 @inject OpenLibraryService openLibraryService
+@inject IJSRuntime JsRuntime
 <BooksAPI_Server.Components.BookModal @ref="Modal"></BooksAPI_Server.Components.BookModal>
 
 <div class="container-fluid">
@@ -135,12 +136,14 @@
     private async Task PreviousPage()
     {
         currentPage -= 1;
+        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
         await HandleSubmit();
     }
 
     private async Task NextPage()
     {
         currentPage += 1;
+        await JsRuntime.InvokeVoidAsync("OnScrollEvent");
         await HandleSubmit();
     }
 
