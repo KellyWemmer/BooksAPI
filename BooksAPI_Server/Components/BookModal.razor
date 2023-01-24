@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites"></i>
+                <i type="button" class="m-2 fa-solid fa-heart-circle-plus fa-xl" title="Add to Favorites"></i>
                 <button title="Add to Reads List" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
                 <button title="Add to Finished List"type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
             </div>
@@ -230,7 +230,6 @@
                     toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
                 }                  
                 
-               // here
                 await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your reading list");
             
 
