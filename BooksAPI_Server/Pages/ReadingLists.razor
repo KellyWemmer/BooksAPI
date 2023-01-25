@@ -2,7 +2,7 @@
 @using BooksAPI_Server.Models
 @using BooksAPI_Server.Repositories;
 @inject ToReadRepository ToReadRepository
-
+@inject FavoritesRepository FavoritesRepository
 
 <div class="container-fluid">
     <div class="row">
@@ -62,6 +62,11 @@
 
 @code {
     List<ToRead> toReads = null;
+
+    public ReadingLists()
+    {
+    }
+
     private ToRead ToRead  { get; set; }
 
 
@@ -81,9 +86,17 @@
         favorite.TenDigitIsbn = toRead.TenDigitIsbn;
         favorite.ThirteenDigitIsbn = toRead.ThirteenDigitIsbn;
 
-        favorite = FavoritesRepository.CreateFavorite(favorite); 
-        
-        //create authortable
+        favorite = FavoritesRepository.CreateFavorite(favorite);
+
+        //create FavoriteAuthor and Author Tables
+        //load data and then check for null
+
+        foreach (var toReadAuthor in ToRead.ToReadAuthors)
+        {
+            //Author author = AuthorRepository.GetAuthorByName(toReadAuthor);
+        }
+            
+
        
     }
 

@@ -20,6 +20,7 @@ builder.Services.AddScoped<OpenLibraryService>();
 builder.Services.AddScoped<ToReadRepository>();
 builder.Services.AddScoped<AuthorRepository>();
 builder.Services.AddScoped<ToReadAuthorRepository>();
+builder.Services.AddScoped<FavoritesRepository>();
 
 var app = builder.Build();
 
