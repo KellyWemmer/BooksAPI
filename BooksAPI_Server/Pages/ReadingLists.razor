@@ -3,6 +3,9 @@
 @using BooksAPI_Server.Repositories;
 @inject ToReadRepository ToReadRepository
 @inject FavoritesRepository FavoritesRepository
+@inject FavoriteAuthorRepository FavoriteAuthorRepository  
+@inject AuthorRepository AuthorRepository
+@inject IJSRuntime jsRuntime
 
 <div class="container-fluid">
     <div class="row">
@@ -67,16 +70,12 @@
     {
     }
 
-    private ToRead ToRead  { get; set; }
-
-
-
     private void GetFictionToReads()
     {
         toReads = ToReadRepository.GetFictionToReads();
     }
 
-    private void AddToFavorites(ToRead toRead)
+    private async void AddToFavorites(ToRead toRead)
     {
 
         Favorite favorite = new Favorite();
@@ -91,13 +90,34 @@
         //create FavoriteAuthor and Author Tables
         //load data and then check for null
 
-        foreach (var toReadAuthor in ToRead.ToReadAuthors)
+        foreach (var toReadAuthor in toRead.ToReadAuthors)
         {
             //Author author = AuthorRepository.GetAuthorByName(toReadAuthor);
-        }
-            
+            Author author = toReadAuthor.Author;
 
-       
+            if (author != null)
+            {
+                FavoriteAuthor favoriteAuthor = new FavoriteAuthor();
+                favoriteAuthor.FavoriteId = favorite.Id;
+                favoriteAuthor.AuthorId = author.Id;
+
+                favoriteAuthor = FavoriteAuthorRepository.CreateFavoriteAuthor(favoriteAuthor);
+            }
+            else
+            {
+                author = new Author();
+                author.AuthorName = toReadAuthor.Author.AuthorName;
+                author = AuthorRepository.CreateAuthor(author);
+
+                FavoriteAuthor favoriteAuthor = new FavoriteAuthor();
+                favoriteAuthor.FavoriteId = favorite.Id;
+                favoriteAuthor.AuthorId = author.Id;
+
+                favoriteAuthor = FavoriteAuthorRepository.CreateFavoriteAuthor(favoriteAuthor);
+            }
+
+            await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your favorites");
+        }      
     }
 
     private void BookIsFinished()
