@@ -81,3 +81,8 @@ a, .btn-link {
     font-size: small;
 }
 
+li:hover {
+    cursor: pointer; 
+    font-weight: bold;
+}
+

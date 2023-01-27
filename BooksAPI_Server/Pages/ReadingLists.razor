@@ -7,18 +7,14 @@
 @inject AuthorRepository AuthorRepository
 @inject IJSRuntime jsRuntime
 
-<div class="container-fluid">
-    <div class="row">
-        <h5 class="col-12">Fiction Reading Lists</h5>
-    </div>    
-    <div class="row">
-        <button class="btn btn-primary col-1 fiction-to-reads" @onclick="GetFictionToReads">Want to Read</button>
-    </div>
-    <div class="row">
-        <button class="btn btn-primary col-1 fiction-favorites" @onclick="GetFictionFavorites">Favorites</button>
-    </div>
-    <div class="row">
-        <h6>Finished</h6>
+<div class="container-fluid">    
+    <h5><b>Fiction Book Lists</b></h5>
+    <div class="row m-2">
+        <ul>
+            <li class="col-1 m-2 fiction-to-reads pointer" @onclick="GetFictionToReads">My Reading List</li>         
+            <li class="col-1 m-2 fiction-favorites pointer" @onclick="GetFictionFavorites">My Favorites</li>      
+            <li class="col-1 m-2">My Completed</li>        
+        </ul>
     </div>
 
     <div class="row">
