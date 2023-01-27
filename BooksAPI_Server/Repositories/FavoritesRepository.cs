@@ -1,5 +1,6 @@
 ﻿using BooksAPI_Server.Data;
 using BooksAPI_Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI_Server.Repositories
 {
@@ -15,6 +16,11 @@ namespace BooksAPI_Server.Repositories
             _context.Favorites.Add(newFavorite);   
             _context.SaveChanges();
             return newFavorite;
+        }
+
+        internal List<Favorite> GetFictionFavorites()
+        {
+            return _context.Favorites.Include("FavoriteAuthors").Include("FavoriteAuthors.Author").ToList();
         }
     }
 }

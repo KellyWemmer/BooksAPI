@@ -12,10 +12,10 @@
         <h5 class="col-12">Fiction Reading Lists</h5>
     </div>    
     <div class="row">
-        <button class="btn btn-primary col-1 fiction-to-read" @onclick="GetFictionToReads">Want to Read</button>
+        <button class="btn btn-primary col-1 fiction-to-reads" @onclick="GetFictionToReads">Want to Read</button>
     </div>
     <div class="row">
-        <h6>Favorites</h6>
+        <button class="btn btn-primary col-1 fiction-favorites" @onclick="GetFictionFavorites">Favorites</button>
     </div>
     <div class="row">
         <h6>Finished</h6>
@@ -44,7 +44,7 @@
                     <div class="mt-2 row">
                         <div class="col-4">
                             <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>
-                            <i type="button" class="fa-solid fa-book" title="Finished" @onclick="BookIsFinished"></i>                            
+                            @*<i type="button" class="fa-solid fa-book" title="Finished" @onclick="() => AddToFinished(item)"></i> *@                           
                         </div>
                         <div class="col-8 justify-content-start">
                             @if (item.TenDigitIsbn != null)
@@ -65,10 +65,7 @@
 
 @code {
     List<ToRead> toReads = null;
-
-    public ReadingLists()
-    {
-    }
+    List<Favorite> favorites = null;    
 
     private void GetFictionToReads()
     {
@@ -120,9 +117,9 @@
         }      
     }
 
-    private void BookIsFinished()
+    private void GetFictionFavorites()
     {
-        
+        favorites = FavoritesRepository.GetFictionFavorites();
     }
 
 
