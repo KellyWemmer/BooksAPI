@@ -43,8 +43,7 @@
                     <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
                     <div class="mt-2 row">
                         <div class="col-4">
-                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>
-                            @*<i type="button" class="fa-solid fa-book" title="Finished" @onclick="() => AddToFinished(item)"></i> *@                           
+                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>                                                       
                         </div>
                         <div class="col-8 justify-content-start">
                             @if (item.TenDigitIsbn != null)
@@ -61,14 +60,49 @@
             }
         </div>    
     }
+
+    @if (favorites != null)
+    {
+        <div class="row">
+            @foreach (var item in favorites)
+            {
+                <div class="col-2">
+                    <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
+                    <div class="mt-2 row">
+                        <div class="col-4">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Finished" @*@onclick="() => AddToFinished(item)"*@></i>                            
+                        </div>
+                        <div class="col-8 justify-content-start">
+                            @if (item.TenDigitIsbn != null)
+                            {
+                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
+                            }
+                            else
+                            {
+                                //Title & Author Search Amazon??
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
 </div>
 
 @code {
     List<ToRead> toReads = null;
-    List<Favorite> favorites = null;    
+    List<Favorite> favorites = null; 
+
+    private void Clear()
+    {
+        toReads = null;
+        favorites = null;
+    }
 
     private void GetFictionToReads()
     {
+        Clear();
         toReads = ToReadRepository.GetFictionToReads();
     }
 
@@ -119,8 +153,11 @@
 
     private void GetFictionFavorites()
     {
+        Clear();
         favorites = FavoritesRepository.GetFictionFavorites();
     }
+
+    //private async void AddToFavorites()
 
 
 
