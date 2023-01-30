@@ -22,6 +22,8 @@ builder.Services.AddScoped<AuthorRepository>();
 builder.Services.AddScoped<ToReadAuthorRepository>();
 builder.Services.AddScoped<FavoritesRepository>();
 builder.Services.AddScoped<FavoriteAuthorRepository>();
+builder.Services.AddScoped<FinishedRepository>();
+builder.Services.AddScoped<FinishedAuthorRepository>();
 
 var app = builder.Build();
 

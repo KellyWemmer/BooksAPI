@@ -5,6 +5,8 @@
 @inject FavoritesRepository FavoritesRepository
 @inject FavoriteAuthorRepository FavoriteAuthorRepository  
 @inject AuthorRepository AuthorRepository
+@inject FinishedRepository FinishedRepository
+@inject FinishedAuthorRepository FinishedAuthorRepository
 @inject IJSRuntime jsRuntime
 
 <div class="container-fluid">    
@@ -66,7 +68,7 @@
                     <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
                     <div class="mt-2 row">
                         <div class="col-4">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Finished" @*@onclick="() => AddToFinished(item)"*@></i>                            
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Finished" @onclick="() => AddToFinished(item)"></i>                            
                         </div>
                         <div class="col-8 justify-content-start">
                             @if (item.TenDigitIsbn != null)
@@ -88,8 +90,9 @@
 
 @code {
     List<ToRead> toReads = null;
-    List<Favorite> favorites = null; 
-    
+    List<Favorite> favorites = null;
+    List<Finished> finished = null;
+
 
     private void Clear()
     {
@@ -154,7 +157,47 @@
         favorites = FavoritesRepository.GetFictionFavorites();
     }
 
-    //private async void AddToFavorites()
+    private async void AddToFinished(Favorite favorite)
+    {
+        Finished finished = new Finished();
+        finished.Key = favorite.Key;
+        finished.Title = favorite.Title;
+        finished.CoverI = favorite.CoverI;
+        finished.TenDigitIsbn = favorite.TenDigitIsbn;
+        finished.ThirteenDigitIsbn = favorite.ThirteenDigitIsbn;
+
+        finished = FinishedRepository.CreateFinished(finished);
+
+        foreach (var favoriteAuthor in favorite.FavoriteAuthors)
+        {
+            Author author = favoriteAuthor.Author;
+
+            if (author != null)
+            {
+                FinishedAuthor finishedAuthor = new FinishedAuthor();
+                finishedAuthor.FinishedId = finished.Id;
+                finishedAuthor.AuthorId = author.Id;
+
+                finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);
+            }
+            else
+            { 
+                author = new Author();
+                author.AuthorName = favoriteAuthor.Author.AuthorName;
+                author = AuthorRepository.CreateAuthor(author);
+
+                FinishedAuthor finishedAuthor = new FinishedAuthor();
+                finishedAuthor.FinishedId = finished.Id;
+                finishedAuthor.AuthorId = author.Id;
+
+                finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);                
+            }
+
+            await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your finished list");
+        }
+    }
+
+    
 
 
 
