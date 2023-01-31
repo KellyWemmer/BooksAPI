@@ -1,5 +1,6 @@
 ﻿using BooksAPI_Server.Data;
 using BooksAPI_Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BooksAPI_Server.Repositories
 {
@@ -17,6 +18,11 @@ namespace BooksAPI_Server.Repositories
             _context.Finished.Add(newFinished);
             _context.SaveChanges();
             return newFinished;
+        }
+
+        internal List<Finished> GetFictionFinished()
+        {
+            return _context.Finished.Include("FinishedAuthors").Include("FinishedAuthors.Author").ToList();
         }
     }
 }
