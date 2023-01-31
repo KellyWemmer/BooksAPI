@@ -15,7 +15,7 @@
         <ul>
             <li class="col-1 m-2 fiction-to-reads pointer" @onclick="GetFictionToReads">My Reading List</li>         
             <li class="col-1 m-2 fiction-favorites pointer" @onclick="GetFictionFavorites">My Favorites</li>      
-            <li class="col-1 m-2 fiction-finished-pointer" @onclick="GetFictionFinished">My Completed</li>        
+            <li class="col-1 m-2 fiction-finished pointer" @onclick="GetFictionFinished">My Completed</li>        
         </ul>
     </div>
 
@@ -39,11 +39,14 @@
             {
                 <div class="col-2">
                     <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
-                    <div class="mt-2 row">
-                        <div class="col-4">
-                            <i type="button" class="m-2 mr-3 fa-regular fa-heart fa-xl" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>                                                       
+                    <div class="add-buttons mt-2 row d-flex">
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-regular fa-heart" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>                                                       
                         </div>
-                        <div class="col-8 justify-content-start">
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book" title="Add to Finshed" @onclick="() => AddToFavorites(item)" ></i>
+                        </div>
+                        <div class="col-4 d-flex justify-content-end">
                             @if (item.TenDigitIsbn != null)
                             {
                                 <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
@@ -52,6 +55,9 @@
                             {
                                 //Title & Author Search Amazon??
                             }
+                        </div>
+                        <div class="col-1">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteToRead(item)" *@></i>
                         </div>
                     </div>
                 </div>
@@ -224,6 +230,8 @@
             await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your finished list");
         }
     }
+
+    //private async void AddToReadToFinished(ToRead toRead)
 
     private async void AddFinishedToFavorites(Finished finished)
     {
