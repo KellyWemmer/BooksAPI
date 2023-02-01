@@ -86,7 +86,12 @@ li:hover {
     font-weight: bold;
 }
 
-/*.add-buttons i:hover {
-    cursor: pointer;
-}*/
+.amazon-link{
+    font-size: small;
+}
+
+.cover-image {
+    max-width: 100%;
+    max-height: 100%;
+}
 

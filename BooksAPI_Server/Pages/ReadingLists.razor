@@ -37,16 +37,19 @@
         <div class="row">
             @foreach (var item in toReads)
             {
-                <div class="col-2">
-                    <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
-                    <div class="add-buttons mt-2 row d-flex">
+                <div class="col-2 m-2">
+                    
+                    <div class="row">
+                        <img class="col-12 cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-L.jpg")" />
+                    </div>
+                    <div class="mt-2 row d-flex justify-content-end">
                         <div class="col-2">
-                            <i type="button" class="m-2 mr-3 fa-regular fa-heart" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>                                                       
+                            <i type="button" class="d-flex m-2 mr-3 fa-regular fa-heart justify-content-end" title="Add to Favorites" @onclick="() => AddToFavorites(item)"></i>
                         </div>
                         <div class="col-2">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-book" title="Add to Finshed" @onclick="() => AddToFavorites(item)" ></i>
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book" title="Add to Completed" @onclick="() => AddToReadsToFinished(item)"></i>
                         </div>
-                        <div class="col-4 d-flex justify-content-end">
+                        <div class="amazon-link col-6 d-flex justify-content-center">
                             @if (item.TenDigitIsbn != null)
                             {
                                 <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
@@ -56,8 +59,8 @@
                                 //Title & Author Search Amazon??
                             }
                         </div>
-                        <div class="col-1">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteToRead(item)" *@></i>
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteToRead(item)"*@ ></i>
                         </div>
                     </div>
                 </div>
@@ -76,7 +79,7 @@
                         <div class="col-4">
                             <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Finished" @onclick="() => AddToFinished(item)"></i>                            
                         </div>
-                        <div class="col-8 justify-content-start">
+                        <div class="amazon-link col-4 justify-content-start">
                             @if (item.TenDigitIsbn != null)
                             {
                                 <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
@@ -102,7 +105,7 @@
                         <div class="col-4">
                             <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Favorite" @onclick="() => AddFinishedToFavorites(item)"></i>
                         </div>
-                        <div class="col-8 justify-content-start">
+                        <div class="amazon-link col-4 justify-content-start">
                             @if (item.TenDigitIsbn != null)
                             {
                                 <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
@@ -139,7 +142,7 @@
         toReads = ToReadRepository.GetFictionToReads();
     }
 
-    private async void AddToFavorites(ToRead toRead)
+    private async Task AddToFavorites(ToRead toRead)
     {
 
         Favorite favorite = new Favorite();
@@ -191,7 +194,7 @@
         
     }
 
-    private async void AddToFinished(Favorite favorite)
+    private async Task AddToFinished(Favorite favorite)
     {
         Finished finished = new Finished();
         finished.Key = favorite.Key;
@@ -231,9 +234,51 @@
         }
     }
 
-    //private async void AddToReadToFinished(ToRead toRead)
+    private async Task AddToReadsToFinished(ToRead toRead)
+    {
 
-    private async void AddFinishedToFavorites(Finished finished)
+        Finished finished = new Finished();
+        finished.Key = toRead.Key;
+        finished.Title = toRead.Title;
+        finished.CoverI = toRead.CoverI;
+        finished.TenDigitIsbn = toRead.TenDigitIsbn;
+        finished.ThirteenDigitIsbn = toRead.ThirteenDigitIsbn;
+
+        finished = FinishedRepository.CreateFinished(finished);
+
+
+        foreach (var toReadAuthor in toRead.ToReadAuthors)
+        {
+            //Author author = AuthorRepository.GetAuthorByName(toReadAuthor);
+            Author author = toReadAuthor.Author;
+
+            if (author != null)
+            {
+                FinishedAuthor finishedAuthor = new FinishedAuthor();
+                finishedAuthor.FinishedId = finished.Id;
+                finishedAuthor.AuthorId = author.Id;
+
+                finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);
+            }
+            else
+            {
+                author = new Author();
+                author.AuthorName = toReadAuthor.Author.AuthorName;
+                author = AuthorRepository.CreateAuthor(author);
+
+                FinishedAuthor finishedAuthor = new FinishedAuthor();
+                finishedAuthor.FinishedId = finished.Id;
+                finishedAuthor.AuthorId = author.Id;
+
+                finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);
+            }
+
+            await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your finished list");
+        }
+    }
+
+
+    private async Task AddFinishedToFavorites(Finished finished)
     {
 
         Favorite favorite = new Favorite();
