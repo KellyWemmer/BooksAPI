@@ -32,8 +32,12 @@
         <h6>Finished</h6>
     </div>
 
+    <div class="row">
+        <div class="list-title col-3 m-3"><b>@title</b></div>
+    </div>
+
     @if (toReads != null)
-    {
+    {        
         <div class="row">
             @foreach (var item in toReads)
             {
@@ -136,7 +140,7 @@
     List<ToRead> toReads = null;
     List<Favorite> favorites = null;
     List<Finished> finished = null;
-
+    private string title;
 
     private void Clear()
     {
@@ -146,9 +150,10 @@
     }
 
     private void GetFictionToReads()
-    {
+    {       
         Clear();
         toReads = ToReadRepository.GetFictionToReads();
+        title = "My Reading List";
     }
 
     private async Task AddToFavorites(ToRead toRead)
@@ -200,7 +205,7 @@
     {
         Clear();
         favorites = FavoritesRepository.GetFictionFavorites();
-
+        title = "My Favorites";
     }
 
     private async Task AddFavoriteToFinished(Favorite favorite)
@@ -333,7 +338,7 @@
     {
         Clear();
         finished = FinishedRepository.GetFictionFinished();
-
+        title = "My Completed";
     }
 
     private async Task DeleteToRead(int Id)
