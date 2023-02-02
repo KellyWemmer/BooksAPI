@@ -24,5 +24,25 @@ namespace BooksAPI_Server.Repositories
         {
             return _context.Finished.Include("FinishedAuthors").Include("FinishedAuthors.Author").ToList();
         }
+
+        internal Finished GetFinishedById(int id)
+        {
+            Finished finished = _context.Finished.FirstOrDefault(f => f.Id == id);
+            return finished;
+        }
+
+        internal void DeleteFinished(int id)
+        {
+            Finished finished = GetFinishedById(id);
+            if (finished != null)
+            {
+                _context.Finished.Remove(finished);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Book not found");
+            }
+        }
     }
 }
