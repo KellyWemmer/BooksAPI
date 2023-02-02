@@ -37,8 +37,7 @@
         <div class="row">
             @foreach (var item in toReads)
             {
-                <div class="col-2 m-2">
-                    
+                <div class="col-2 m-2">                    
                     <div class="row">
                         <img class="col-12 cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-L.jpg")" />
                     </div>
@@ -73,13 +72,15 @@
         <div class="row">
             @foreach (var item in favorites)
             {
-                <div class="col-2">
-                    <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
-                    <div class="mt-2 row">
-                        <div class="col-4">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Finished" @onclick="() => AddToFinished(item)"></i>                            
+                <div class="col-2 m-2">
+                    <div class="row">
+                        <img class="col-12 cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-L.jpg")" />
+                    </div>
+                    <div class="mt-2 row">                        
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book" title="Add to Completed" @onclick="() => AddFavoriteToFinished(item)"></i>
                         </div>
-                        <div class="amazon-link col-4 justify-content-start">
+                        <div class="amazon-link col-8 d-flex justify-content-center">
                             @if (item.TenDigitIsbn != null)
                             {
                                 <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
@@ -89,6 +90,9 @@
                                 //Title & Author Search Amazon??
                             }
                         </div>
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteFavorite(item)" *@></i>
+                        </div>
                     </div>
                 </div>
             }
@@ -97,6 +101,34 @@
     @if (finished != null)
     {
         <div class="row">
+            @foreach (var item in finished)
+            {
+                <div class="col-2 m-2">
+                    <div class="row">
+                        <img class="col-12 cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-L.jpg")"/>
+                    </div>
+                    <div class="mt-2 row">
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-book" title="Add to Favorites" @onclick="() => AddFinishedToFavorites(item)"></i>
+                        </div>
+                        <div class="amazon-link col-8 d-flex justify-content-center">
+                            @if (item.TenDigitIsbn != null)
+                            {
+                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
+                            }
+                            else
+                            {
+                                //Title & Author Search Amazon??
+                            }
+                        </div>
+                        <div class="col-2">
+                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteFinished(item)" *@></i>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @*<div class="row">
             @foreach (var item in finished)
             {
                 <div class="col-2">
@@ -118,7 +150,7 @@
                     </div>
                 </div>
             }
-        </div>
+        </div>*@
     }
 
 </div>
@@ -194,7 +226,7 @@
         
     }
 
-    private async Task AddToFinished(Favorite favorite)
+    private async Task AddFavoriteToFinished(Favorite favorite)
     {
         Finished finished = new Finished();
         finished.Key = favorite.Key;
@@ -290,9 +322,6 @@
 
         favorite = FavoritesRepository.CreateFavorite(favorite);
 
-        //create FavoriteAuthor and Author Tables
-        //load data and then check for null
-
         foreach (var finishedAuthor in finished.FinishedAuthors)
         {
             //Author author = AuthorRepository.GetAuthorByName(toReadAuthor);
@@ -319,7 +348,7 @@
                 favoriteAuthor = FavoriteAuthorRepository.CreateFavoriteAuthor(favoriteAuthor);
             }
 
-            await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your favorites");
+            await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your completed");
         }  
 
     }
