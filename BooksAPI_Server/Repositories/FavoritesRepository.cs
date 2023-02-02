@@ -22,5 +22,25 @@ namespace BooksAPI_Server.Repositories
         {
             return _context.Favorites.Include("FavoriteAuthors").Include("FavoriteAuthors.Author").ToList();
         }
+
+        internal Favorite GetFavoriteById(int id) 
+        {
+            Favorite favorite = _context.Favorites.FirstOrDefault(f => f.Id == id);
+            return favorite;
+        }
+
+        internal void DeleteFavorite(int id) 
+        {
+            Favorite favorite = GetFavoriteById(id);
+            if (favorite != null)
+            {
+                _context.Favorites.Remove(favorite);
+                _context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Book not found");
+            }
+        }
     }
 }
