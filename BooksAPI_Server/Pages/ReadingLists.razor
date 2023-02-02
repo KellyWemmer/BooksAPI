@@ -59,7 +59,7 @@
                             }
                         </div>
                         <div class="col-2">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @*@onclick="() => DeleteToRead(item)"*@ ></i>
+                            <i type="button" class="m-2 mr-3 fa-solid fa-trash-can" title="Delete" @onclick="() => DeleteToRead(item.Id)" ></i>
                         </div>
                     </div>
                 </div>
@@ -128,29 +128,6 @@
                 </div>
             }
         </div>
-        @*<div class="row">
-            @foreach (var item in finished)
-            {
-                <div class="col-2">
-                    <img class="cover-image" src="@($"https://covers.openlibrary.org/b/id/{@item.CoverI}-M.jpg")" />
-                    <div class="mt-2 row">
-                        <div class="col-4">
-                            <i type="button" class="m-2 mr-3 fa-solid fa-book fa-xl" title="Favorite" @onclick="() => AddFinishedToFavorites(item)"></i>
-                        </div>
-                        <div class="amazon-link col-4 justify-content-start">
-                            @if (item.TenDigitIsbn != null)
-                            {
-                                <a href='@($"https://www.amazon.com/dp/{item.TenDigitIsbn}/?tag=internetarchi-20")' target="_blank" class="link-amazon">Amazon</a>
-                            }
-                            else
-                            {
-                                //Title & Author Search Amazon??
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>*@
     }
 
 </div>
@@ -223,7 +200,7 @@
     {
         Clear();
         favorites = FavoritesRepository.GetFictionFavorites();
-        
+
     }
 
     private async Task AddFavoriteToFinished(Favorite favorite)
@@ -359,7 +336,19 @@
         finished = FinishedRepository.GetFictionFinished();
 
     }
-    
+
+    private async Task DeleteToRead(int Id)
+    {        
+        {
+            bool confirmed = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this book?");
+            ToReadRepository.DeleteToRead(Id);
+            GetFictionToReads();
+        }
+
+        await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been deleted");
+
+    }
+
 
 
 

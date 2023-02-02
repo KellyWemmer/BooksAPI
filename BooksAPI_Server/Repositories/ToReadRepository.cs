@@ -42,7 +42,7 @@ namespace BooksAPI_Server.Repositories
             }
             else
             {
-                throw new Exception("Book ToRead not found");
+                throw new Exception("Book not found");
             }
         }
         
