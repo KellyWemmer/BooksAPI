@@ -5,7 +5,10 @@
 @inject ToReadRepository ToReadRepository
 @inject AuthorRepository AuthorRepository
 @inject ToReadAuthorRepository ToReadAuthorRepository
+@inject FavoritesRepository FavoritesRepository
+@inject FavoriteAuthorRepository FavoriteAuthorRepository
 @inject IJSRuntime jsRuntime
+
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -51,9 +54,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <i type="button" class="m-2 fa-solid fa-heart-circle-plus fa-xl" title="Add to Favorites"></i>
-                <button title="Add to Reads List" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
-                <button title="Add to Finished List"type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
+                <i title="Add to Favorites" type="button" class="m-2 fa-solid fa-heart-circle-plus fa-xl" @onclick=AddToFavorites></i>
+                <button title="Add to Reading List" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
+                <button title="Add to Completed" type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
             </div>
         </div>
     </div>
@@ -83,7 +86,7 @@
         Work = null;
 
         await SearchEditions();
-        
+
         if(booksResponse != null && booksResponse.docs != null)
         {
             foreach (var item in booksResponse.docs)
@@ -196,7 +199,7 @@
             toRead.ThirteenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length == 13);
         }
 
-         toRead = ToReadRepository.CreateToRead(toRead);
+        toRead = ToReadRepository.CreateToRead(toRead);
 
 
         if (Book.author_name != null)
@@ -216,37 +219,73 @@
                     //Create ToReadAuthor
                     toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
                 }
-                //Create new Author in author table
+                //In not an author in Author Table, create new Author in author table
                 else
                 {                    
                     author = new Author();
                     author.AuthorName = bookAuthor; 
+
                     author = AuthorRepository.CreateAuthor(author);
-                    
+
                     ToReadAuthor toReadAuthor = new ToReadAuthor();
                     toReadAuthor.ToReadId = toRead.Id;
                     toReadAuthor.AuthorId = author.Id;
 
                     toReadAuthor = ToReadAuthorRepository.CreateToReadAuthor(toReadAuthor);
                 }                  
-                
+
                 await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your reading list");
-            
 
-
+            }
         }
+
     }
 
-    
-}
+    private async Task AddToFavorites()
+    {
+        Favorite favorite = new Favorite();
+        favorite.Key = Book.key;
+        favorite.Title = Book.title;
+        favorite.CoverI = Book.cover_i;
 
-    
+        if (Book.isbn != null)
+        {
+            favorite.TenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length <= 10);
+            favorite.ThirteenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length == 13);
+        }
 
-    
+        favorite = FavoritesRepository.CreateFavorite(favorite);
 
+        if (Book.author_name != null)
+        {
+            foreach (var bookAuthor in Book.author_name)
+            {
+                Author author = AuthorRepository.GetAuthorByName(bookAuthor);
 
+                if (author != null)
+                {
+                    FavoriteAuthor favoriteAuthor = new FavoriteAuthor();
+                    favoriteAuthor.FavoriteId = favorite.Id;
+                    favoriteAuthor.AuthorId = author.Id;
 
+                    favoriteAuthor = FavoriteAuthorRepository.CreateFavoriteAuthor(favoriteAuthor);
+                }
+                else
+                {
+                    author = new Author();
+                    author.AuthorName = bookAuthor;
 
-    
+                    author = AuthorRepository.CreateAuthor(author);
 
+                    FavoriteAuthor favoriteAuthor = new FavoriteAuthor();
+                    favoriteAuthor.FavoriteId = favorite.Id;
+                    favoriteAuthor.AuthorId = author.Id;
+
+                    favoriteAuthor = FavoriteAuthorRepository.CreateFavoriteAuthor(favoriteAuthor);
+                }
+
+                await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your favorites");
+            }
+        }
+    }
 }
