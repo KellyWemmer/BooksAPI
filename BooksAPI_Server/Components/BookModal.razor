@@ -288,4 +288,12 @@
             }
         }
     }
+
+    private async Task AddToFinished()
+    {
+        Finished finished = new Finished();
+        finished.Key = Book.key;
+        finished.Title = Book.title;
+        finished.CoverI = Book.cover_i;
+    }
 }
