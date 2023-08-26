@@ -7,6 +7,8 @@
 @inject ToReadAuthorRepository ToReadAuthorRepository
 @inject FavoritesRepository FavoritesRepository
 @inject FavoriteAuthorRepository FavoriteAuthorRepository
+@inject FinishedRepository FinishedRepository
+@inject FinishedAuthorRepository FinishedAuthorRepository
 @inject IJSRuntime jsRuntime
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
@@ -56,7 +58,7 @@
             <div class="modal-footer">
                 <i title="Add to Favorites" type="button" class="m-2 fa-solid fa-heart-circle-plus fa-xl" @onclick=AddToFavorites></i>
                 <button title="Add to Reading List" type="button" class="add-ToRead btn btn-primary" @onclick=AddToRead>Want To Read</button>
-                <button title="Add to Completed" type="button" class="btn btn-secondary" data-dismiss="modal">Already Read</button>
+                <button title="Add to Completed" type="button" class="btn btn-secondary" data-dismiss="modal" @onclick=AddToFinished>Already Read</button>
             </div>
         </div>
     </div>
@@ -295,5 +297,46 @@
         finished.Key = Book.key;
         finished.Title = Book.title;
         finished.CoverI = Book.cover_i;
+
+        if (Book.isbn != null)
+        {
+            finished.TenDigitIsbn = Book.isbn.First(i => i.Length <= 10);
+            finished.ThirteenDigitIsbn = Book.isbn.FirstOrDefault(i => i.Length == 13);
+        }
+
+        finished = FinishedRepository.CreateFinished(finished);
+
+        if (Book.author_name != null)
+        {
+            foreach (var bookAuthor in Book.author_name)
+            {
+                Author author = AuthorRepository.GetAuthorByName(bookAuthor);
+
+                if (author!= null)
+                {
+                    FinishedAuthor finishedAuthor = new FinishedAuthor();
+                    finishedAuthor.FinishedId = finished.Id;
+                    finishedAuthor.AuthorId = author.Id;
+
+                    finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);
+                }
+                else
+                {
+                    author = new Author();
+                    author.AuthorName = bookAuthor;
+
+                    author = AuthorRepository.CreateAuthor(author);
+
+                    FinishedAuthor finishedAuthor = new FinishedAuthor();
+                    finishedAuthor.FinishedId = finished.Id;
+                    finishedAuthor.AuthorId = author.Id;
+
+                    finishedAuthor = FinishedAuthorRepository.CreateFinishedAuthor(finishedAuthor);
+
+                }
+
+                await jsRuntime.InvokeVoidAsync("ShowToastr", "success", "This book has been added to your finished");
+            }            
+        }
     }
 }
